@@ -3,6 +3,6 @@ echo Activation de l'environnement virtuel...
 call .\venv\Scripts\activate.bat
 
 echo Lancement du serveur Django...
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000
 
 pause

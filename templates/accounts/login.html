@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion - Tutore2{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Connexion</h2>
+        
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Username -->
+            <div>
+                <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Nom d'utilisateur
+                </label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Mot de passe
+                </label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-red-600 text-sm mt-1">{{ form.password.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center">
+                {{ form.remember_me }}
+                <label for="{{ form.remember_me.id_for_label }}" class="ml-2 text-sm text-gray-700">
+                    Se souvenir de moi
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                Se connecter
+            </button>
+
+            <!-- Non-field Errors -->
+            {% if form.non_field_errors %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+
+        <!-- Links -->
+        <div class="mt-8 text-center space-y-2">
+            <p class="text-gray-600">
+                Pas encore inscrit?
+                <a href="{% url 'accounts:student_register' %}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                    S'inscrire en tant qu'étudiant
+                </a>
+            </p>
+            <p class="text-gray-600 text-sm">
+                <a href="#" class="text-blue-600 hover:text-blue-800">Mot de passe oublié?</a>
+            </p>
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
+            <p class="text-sm text-gray-700">
+                <strong>Compte de démonstration :</strong><br>
+                Username: <code class="bg-gray-100 px-2 py-1 rounded">admin</code><br>
+                Password: <code class="bg-gray-100 px-2 py-1 rounded">demo123</code>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

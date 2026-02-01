@@ -1,10 +1,11 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import RoomViewSet
+from django.urls import path
+from . import views
 
-router = DefaultRouter()
-router.register(r'', RoomViewSet)
+app_name = 'rooms'
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.RoomListView.as_view(), name='list'),
+    path('add/', views.RoomCreateView.as_view(), name='add'),
+    path('<int:pk>/edit/', views.RoomUpdateView.as_view(), name='edit'),
+    path('<int:pk>/delete/', views.RoomDeleteView.as_view(), name='delete'),
 ]

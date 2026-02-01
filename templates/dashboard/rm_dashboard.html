@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Gestionnaire Ressources - Tutore2{% endblock %}
+{% block content %}
+<div class="space-y-6">
+    <h1 class="text-4xl font-bold text-gray-800">Dashboard Gestionnaire de Ressources</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-bold text-gray-800">Total Salles</h3>
+            <p class="text-4xl font-bold text-blue-600 mt-2">{{ total_rooms }}</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-bold text-gray-800">Salles Disponibles</h3>
+            <p class="text-4xl font-bold text-green-600 mt-2">{{ available_rooms }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

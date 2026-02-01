@@ -1,10 +1,5 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import TimetableViewSet
+"""Archived: DRF API routes not available."""
 
-router = DefaultRouter()
-router.register(r'', TimetableViewSet)
+from django.urls import path
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = []

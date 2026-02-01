@@ -37,14 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Applications personnalisées
+
+    # Applications conservées
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'rooms.apps.RoomsConfig',
     'timetables.apps.TimetablesConfig',
-    'schedules.apps.SchedulesConfig',
+    'enrollments.apps.EnrollmentsConfig',
+    'dashboard.apps.DashboardConfig',
     'availability.apps.AvailabilityConfig',
+    'schedules.apps.SchedulesConfig',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'Tutore2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -155,4 +157,29 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Templates
+TEMPLATES_DIR = BASE_DIR / 'templates'
+
+# Configuration des sessions
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 1209600  # 2 semaines
+SESSION_COOKIE_SECURE = False  # À mettre True en production
+SESSION_COOKIE_HTTPONLY = True
+
+# Messages
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+# Redirects après login/logout
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'dashboard:home'
+LOGOUT_REDIRECT_URL = 'users:login'
+
+# Email Configuration (pour la récupération de mot de passe)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # À configurer en production

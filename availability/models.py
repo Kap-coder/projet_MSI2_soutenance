@@ -1,10 +1,10 @@
 from django.db import models
+from django.conf import settings
 from django.core.exceptions import ValidationError
-from users.models import User
 
 class TeacherAvailability(models.Model):
     '''
-    Modèle pour que les enseignants puissent indiquer leurs disponibilités.
+    Disponibilités semaine/time pour enseignants.
     '''
     DAYS_OF_WEEK = (
         (0, 'Lundi'),
@@ -16,7 +16,7 @@ class TeacherAvailability(models.Model):
         (6, 'Dimanche'),
     )
 
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'TEACHER'}, verbose_name="Enseignant", related_name='availabilities')
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'role': 'TEACHER'}, verbose_name="Enseignant", related_name='availabilities')
     day_of_week = models.IntegerField(choices=DAYS_OF_WEEK, verbose_name="Jour de la semaine")
     start_time = models.TimeField(verbose_name="Heure de début")
     end_time = models.TimeField(verbose_name="Heure de fin")

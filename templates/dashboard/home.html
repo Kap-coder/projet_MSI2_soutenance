@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Tutore2{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow rounded-lg p-6 text-center">
+    <h1 class="text-2xl font-bold mb-4 text-gray-900">Bienvenue sur Tutore2</h1>
+    <p class="text-gray-600 mb-6">Votre rôle actuel ne dispose pas d'un tableau de bord spécifique configuré.</p>
+
+    <div class="inline-block bg-gray-100 rounded-lg p-4 text-left">
+        <p class="font-medium text-gray-800">Debug Info:</p>
+        <ul class="list-disc pl-5 text-sm text-gray-600 mt-2">
+            <li>Utilisateur : {{ user.username }}</li>
+            <li>Rôle : {{ user.role }}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

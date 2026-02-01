@@ -4,6 +4,7 @@ import django.contrib.auth.models
 import django.contrib.auth.validators
 import django.utils.timezone
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -29,7 +30,7 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('role', models.CharField(choices=[('ADMIN', 'Administrateur'), ('TEACHER', 'Enseignant'), ('STUDENT', 'Étudiant')], max_length=10, verbose_name='Rôle')),
+                ('role', models.CharField(choices=[('ADMIN', 'Administrateur'), ('TEACHER', 'Enseignant'), ('STUDENT', 'Étudiant'), ('DEPARTMENT_HEAD', 'Chef de département'), ('HR', 'Ressources Humaines'), ('RESOURCE_MANAGER', 'Gestionnaire de ressources')], max_length=20, verbose_name='Rôle')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
             ],
@@ -41,5 +42,76 @@ class Migration(migrations.Migration):
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
             ],
+        ),
+        migrations.CreateModel(
+            name='Department',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100, unique=True, verbose_name='Nom du département')),
+                ('code', models.CharField(max_length=10, unique=True, verbose_name='Code du département')),
+                ('description', models.TextField(blank=True, verbose_name='Description')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('head', models.OneToOneField(blank=True, limit_choices_to={'role': 'DEPARTMENT_HEAD'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='headed_department', to='users.user', verbose_name='Chef de département')),
+            ],
+            options={
+                'verbose_name': 'Département',
+                'verbose_name_plural': 'Départements',
+                'ordering': ['name'],
+            },
+        ),
+        migrations.CreateModel(
+            name='LoginLog',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('ip_address', models.GenericIPAddressField(verbose_name='Adresse IP')),
+                ('user_agent', models.TextField(verbose_name='User Agent')),
+                ('login_time', models.DateTimeField(auto_now_add=True, verbose_name='Heure de connexion')),
+                ('logout_time', models.DateTimeField(blank=True, null=True, verbose_name='Heure de déconnexion')),
+                ('is_successful', models.BooleanField(default=True, verbose_name='Connexion réussie')),
+                ('failure_reason', models.CharField(blank=True, max_length=255, verbose_name="Raison de l'échec")),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='login_logs', to='users.user', verbose_name='Utilisateur')),
+            ],
+            options={
+                'verbose_name': 'Log de connexion',
+                'verbose_name_plural': 'Logs de connexion',
+                'ordering': ['-login_time'],
+            },
+        ),
+        migrations.CreateModel(
+            name='RememberMeToken',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('token', models.CharField(max_length=255, unique=True, verbose_name='Token')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('expires_at', models.DateTimeField(verbose_name='Expiration')),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='remember_token', to='users.user', verbose_name='Utilisateur')),
+            ],
+            options={
+                'verbose_name': 'Token de mémorisation',
+                'verbose_name_plural': 'Tokens de mémorisation',
+            },
+        ),
+        migrations.CreateModel(
+            name='TeacherAvailability',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('day_of_week', models.IntegerField(choices=[(0, 'Lundi'), (1, 'Mardi'), (2, 'Mercredi'), (3, 'Jeudi'), (4, 'Vendredi'), (5, 'Samedi'), (6, 'Dimanche')], verbose_name='Jour de la semaine')),
+                ('start_time', models.TimeField(verbose_name='Heure de début')),
+                ('end_time', models.TimeField(verbose_name='Heure de fin')),
+                ('is_active', models.BooleanField(default=True, verbose_name='Actif')),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('teacher', models.ForeignKey(limit_choices_to={'role': 'TEACHER'}, on_delete=django.db.models.deletion.CASCADE, related_name='availabilities', to='users.user', verbose_name='Enseignant')),
+            ],
+            options={
+                'verbose_name': 'Disponibilité enseignant',
+                'verbose_name_plural': 'Disponibilités enseignants',
+                'ordering': ['day_of_week', 'start_time'],
+            },
+        ),
+        migrations.AlterUniqueTogether(
+            name='teacheravailability',
+            unique_together={('teacher', 'day_of_week', 'start_time', 'end_time')},
         ),
     ]

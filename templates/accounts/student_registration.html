@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription Étudiant - Tutore2{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 py-12">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Inscription Étudiant</h2>
+            <p class="text-center text-gray-600 mb-8">Créez votre compte étudiant et attendez la validation du chef de département</p>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- First Name -->
+                    <div>
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Prénom *
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.first_name.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Nom *
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.last_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Email *
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Username -->
+                <div>
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Nom d'utilisateur *
+                    </label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Matricule -->
+                    <div>
+                        <label for="{{ form.matricule.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Matricule *
+                        </label>
+                        {{ form.matricule }}
+                        {% if form.matricule.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.matricule.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Year -->
+                    <div>
+                        <label for="{{ form.year.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Niveau d'étude *
+                        </label>
+                        {{ form.year }}
+                        {% if form.year.errors %}
+                            <div class="text-red-600 text-sm mt-1">{{ form.year.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Department -->
+                <div>
+                    <label for="{{ form.department.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Département *
+                    </label>
+                    {{ form.department }}
+                    {% if form.department.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.department.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Mot de passe *
+                    </label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Confirmer le mot de passe *
+                    </label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="text-red-600 text-sm mt-1">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    S'inscrire
+                </button>
+
+                <!-- Non-field Errors -->
+                {% if form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+
+            <!-- Links -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    Vous avez déjà un compte?
+                    <a href="{% url 'accounts:login' %}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-600 rounded">
+                <p class="text-sm text-gray-700">
+                    <strong>⚠️ Attention :</strong> Votre compte doit être validé par le chef de département avant de pouvoir accéder à l'emploi du temps.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

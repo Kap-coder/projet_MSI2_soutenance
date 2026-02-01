@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Salle - Tutore2{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier la salle : {{ form.instance.name }}{% else %}Nouvelle Salle{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+                <!-- Nom -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">Nom
+                        de la salle</label>
+                    <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}"
+                        value="{{ form.name.value|default:'' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                        required>
+                    {% if form.name.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.name.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Type -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.room_type.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                    <select name="{{ form.room_type.name }}" id="{{ form.room_type.id_for_label }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                        {% for value, label in form.room_type.field.choices %}
+                        <option value="{{ value }}" {% if form.room_type.value == value %}selected{% endif %}>{{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Capacité -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.capacity.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Capacité</label>
+                    <input type="number" name="{{ form.capacity.name }}" id="{{ form.capacity.id_for_label }}"
+                        value="{{ form.capacity.value|default:'' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                        required min="1">
+                    {% if form.capacity.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.capacity.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Localisation -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.location.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Localisation (Batiment/Etage)</label>
+                    <input type="text" name="{{ form.location.name }}" id="{{ form.location.id_for_label }}"
+                        value="{{ form.location.value|default:'' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                </div>
+
+                <!-- Disponibilité -->
+                <div class="sm:col-span-6">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="{{ form.is_available.id_for_label }}" name="{{ form.is_available.name }}"
+                                type="checkbox" {% if form.is_available.value|default:True %}checked{% endif %}
+                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="{{ form.is_available.id_for_label }}"
+                                class="font-medium text-gray-700">Disponible</label>
+                            <p class="text-gray-500">Décochez si la salle est en maintenance ou inutilisable.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-5 border-t border-gray-200 flex justify-end">
+                <a href="{% url 'rooms:list' %}"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
+                    Annuler
+                </a>
+                <button type="submit"
+                    class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {% if form.instance.pk %}Enregistrer les modifications{% else %}Ajouter la salle{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
