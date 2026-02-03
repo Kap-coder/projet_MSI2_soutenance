@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Disponibilité - Tutore2{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier Disponibilité{% else %}Nouvelle Disponibilité{% endif %}{%
+endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <!-- Day -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.day_of_week.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Jour de la semaine</label>
+                    <select name="{{ form.day_of_week.name }}" id="{{ form.day_of_week.id_for_label }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                        {% for value, label in form.day_of_week.field.choices %}
+                        <option value="{{ value }}" {% if
+                            form.day_of_week.value|stringformat:"s"==value|stringformat:"s" %}selected{% endif %}>{{
+                            label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Start Time -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.start_time.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Heure de début</label>
+                    <input type="time" name="{{ form.start_time.name }}" id="{{ form.start_time.id_for_label }}"
+                        value="{{ form.start_time.value|default:'' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                        required>
+                    {% if form.start_time.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.start_time.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- End Time -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.end_time.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Heure de fin</label>
+                    <input type="time" name="{{ form.end_time.name }}" id="{{ form.end_time.id_for_label }}"
+                        value="{{ form.end_time.value|default:'' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                        required>
+                    {% if form.end_time.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.end_time.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Active -->
+                <div class="sm:col-span-6">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="{{ form.is_active.id_for_label }}" name="{{ form.is_active.name }}"
+                                type="checkbox" {% if form.is_active.value %}checked{% endif %}
+                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="{{ form.is_active.id_for_label }}"
+                                class="font-medium text-gray-700">Actif</label>
+                            <p class="text-gray-500">Décocher pour désactiver temporairement ce créneau sans le
+                                supprimer.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-5 border-t border-gray-200 flex justify-end">
+                <a href="{% url 'availability:list' %}"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
+                    Annuler
+                </a>
+                <button type="submit"
+                    class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {% if form.instance.pk %}Enregistrer{% else %}Ajouter{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
