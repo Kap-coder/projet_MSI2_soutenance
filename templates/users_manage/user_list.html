@@ -61,85 +61,88 @@
                                     {{ u.first_name|first|upper }}{{ u.last_name|first|upper }}
                                 </div>
                             </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">{{ u.get_full_name }}</div>
-                                <div class="text-sm text-gray-500">@{{ u.username }}</div>
-                            </div>
                         </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        <div class="ml-4">
+                            <a href="{% url 'manage_users:detail' u.pk %}"
+                                class="text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:underline">
+                                {{ u.get_full_name }}
+                            </a>
+                            <div class="text-sm text-gray-500">@{{ u.username }}</div>
+                        </div>
+    </div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             {% if u.role == 'ADMIN' %}bg-purple-100 text-purple-800
                             {% elif u.role == 'TEACHER' %}bg-blue-100 text-blue-800
                             {% elif u.role == 'STUDENT' %}bg-green-100 text-green-800
                             {% else %}bg-gray-100 text-gray-800{% endif %}">
-                            {{ u.get_role_display }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ u.email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {% if u.is_active %}
-                        <span class="text-green-600">Actif</span>
-                        {% else %}
-                        <span class="text-red-600">Inactif</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="{% url 'manage_users:edit' u.pk %}"
-                            class="text-indigo-600 hover:text-indigo-900 mr-3">Modifier</a>
-                        {% if u.pk != user.pk %}
-                        <a href="{% url 'manage_users:delete' u.pk %}"
-                            class="text-red-600 hover:text-red-900">Supprimer</a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">Aucun utilisateur trouvé.</td>
-                </tr>
+            {{ u.get_role_display }}
+        </span>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ u.email }}</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {% if u.is_active %}
+        <span class="text-green-600">Actif</span>
+        {% else %}
+        <span class="text-red-600">Inactif</span>
+        {% endif %}
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+        <a href="{% url 'manage_users:detail' u.pk %}" class="text-gray-600 hover:text-gray-900 mr-3">Voir</a>
+        <a href="{% url 'manage_users:edit' u.pk %}" class="text-indigo-600 hover:text-indigo-900 mr-3">Modifier</a>
+        {% if u.pk != user.pk %}
+        <a href="{% url 'manage_users:delete' u.pk %}" class="text-red-600 hover:text-red-900">Supprimer</a>
+        {% endif %}
+    </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">Aucun utilisateur trouvé.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm text-gray-700">
+                Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à <span class="font-medium">{{
+                    page_obj.end_index }}</span> sur <span class="font-medium">{{
+                    paginator.count }}</span> résultats
+            </p>
+        </div>
+        <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&role={{ selected_role }}&q={{ query }}"
+                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Précédent</a>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <span
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-indigo-50 text-sm font-medium text-indigo-600">{{
+                    i }}</span>
+                {% else %}
+                <a href="?page={{ i }}&role={{ selected_role }}&q={{ query }}"
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{
+                    i }}</a>
+                {% endif %}
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-                <p class="text-sm text-gray-700">
-                    Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à <span
-                        class="font-medium">{{ page_obj.end_index }}</span> sur <span class="font-medium">{{
-                        paginator.count }}</span> résultats
-                </p>
-            </div>
-            <div>
-                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                    {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}&role={{ selected_role }}&q={{ query }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Précédent</a>
-                    {% endif %}
-
-                    {% for i in paginator.page_range %}
-                    {% if page_obj.number == i %}
-                    <span
-                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-indigo-50 text-sm font-medium text-indigo-600">{{
-                        i }}</span>
-                    {% else %}
-                    <a href="?page={{ i }}&role={{ selected_role }}&q={{ query }}"
-                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{
-                        i }}</a>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}&role={{ selected_role }}&q={{ query }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Suivant</a>
-                    {% endif %}
-                </nav>
-            </div>
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&role={{ selected_role }}&q={{ query }}"
+                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Suivant</a>
+                {% endif %}
+            </nav>
         </div>
     </div>
-    {% endif %}
+</div>
+{% endif %}
 </div>
 {% endblock %}

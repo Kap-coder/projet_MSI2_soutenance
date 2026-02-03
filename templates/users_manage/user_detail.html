@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Détail Utilisateur - Tutore2{% endblock %}
+{% block header_title %}Profil de {{ user_obj.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Informations Personnelles</h3>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">Détails du compte et informations de contact.</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{% url 'manage_users:edit' user_obj.pk %}"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Modifier
+                </a>
+                {% if user_obj.pk != request.user.pk %}
+                <a href="{% url 'manage_users:delete' user_obj.pk %}"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+                    Supprimer
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="border-t border-gray-200">
+            <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Nom complet</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user_obj.get_full_name }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Nom d'utilisateur</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">@{{ user_obj.username }}</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user_obj.email }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Rôle</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if user_obj.role == 'ADMIN' %}bg-purple-100 text-purple-800
+                            {% elif user_obj.role == 'TEACHER' %}bg-blue-100 text-blue-800
+                            {% elif user_obj.role == 'STUDENT' %}bg-green-100 text-green-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ user_obj.get_role_display }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Date d'inscription</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user_obj.date_joined|date:"d F Y
+                        H:i" }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Dernière connexion</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ user_obj.last_login|date:"d F Y
+                        H:i"|default:"Jamais" }}</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Statut du compte</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        {% if user_obj.is_active %}
+                        <span class="text-green-600 font-medium">Actif</span>
+                        {% else %}
+                        <span class="text-red-600 font-medium">Inactif</span>
+                        {% endif %}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Profil Spécifique -->
+    {% if user_obj.role == 'STUDENT' and student_profile %}
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Informations Étudiant</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Détails académiques.</p>
+        </div>
+        <div class="border-t border-gray-200">
+            <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Matricule</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ student_profile.matricule }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Niveau</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ student_profile.get_year_display }}
+                    </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Département</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{
+                        student_profile.department.name|default:"Non assigné" }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Statut Inscription</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if student_profile.enrollment_status == 'APPROVED' %}bg-green-100 text-green-800
+                            {% elif student_profile.enrollment_status == 'REJECTED' %}bg-red-100 text-red-800
+                            {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            {{ student_profile.get_enrollment_status_display }}
+                        </span>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+    {% elif user_obj.role == 'DEPARTMENT_HEAD' and headed_department %}
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Responsabilités</h3>
+        </div>
+        <div class="border-t border-gray-200">
+            <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Département dirigé</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ headed_department.name }} ({{
+                        headed_department.code }})</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="flex justify-start">
+        <a href="{% url 'manage_users:list' %}" class="text-indigo-600 hover:text-indigo-900 font-medium">
+            &larr; Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}

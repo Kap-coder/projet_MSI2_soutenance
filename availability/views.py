@@ -7,10 +7,12 @@ from django import forms
 class AvailabilityForm(forms.ModelForm):
     class Meta:
         model = TeacherAvailability
-        fields = ['day_of_week', 'start_time', 'end_time', 'is_active']
+        fields = ['day_of_week', 'start_time', 'end_time', 'start_date', 'end_date', 'is_active']
         widgets = {
             'start_time': forms.TimeInput(attrs={'type': 'time'}),
             'end_time': forms.TimeInput(attrs={'type': 'time'}),
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
 class TeacherAvailabilityListView(LoginRequiredMixin, ListView):

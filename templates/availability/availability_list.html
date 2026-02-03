@@ -28,6 +28,8 @@
                         Début</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Heure Fin
                     </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Validité
+                    </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut
                     </th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
@@ -45,6 +47,20 @@
                         avail.get_day_of_week_display }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ avail.start_time }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ avail.end_time }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {% if avail.start_date or avail.end_date %}
+                        {{ avail.start_date|default:"..." }} au {{ avail.end_date|default:"..." }}
+                        {% else %}
+                        Permanente
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {% if avail.start_date or avail.end_date %}
+                        {{ avail.start_date|default:"..." }} au {{ avail.end_date|default:"..." }}
+                        {% else %}
+                        Permanente
+                        {% endif %}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                         {% if avail.is_active %}
                         <span

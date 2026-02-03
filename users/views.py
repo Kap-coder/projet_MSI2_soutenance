@@ -7,7 +7,7 @@ from .models import User, Department
 from enrollments.models import StudentProfile
 from .forms import CustomAuthenticationForm, StudentRegistrationForm, AdminUserCreationForm, AdminUserChangeForm
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 
@@ -150,6 +150,25 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         context['role_choices'] = User.ROLE_CHOICES
         context['selected_role'] = self.request.GET.get('role', '')
         context['query'] = self.request.GET.get('q', '')
+        return context
+
+
+class UserDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
+    model = User
+    template_name = 'users_manage/user_detail.html'
+    context_object_name = 'user_obj'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Ajouter infos contextuelles selon le rôle
+        user = self.object
+        if user.role == 'STUDENT' and hasattr(user, 'student_profile'):
+            context['student_profile'] = user.student_profile
+        elif user.role == 'TEACHER':
+            # Ajouter disponibilités ou cours enseignés si nécessaire
+            pass
+        elif user.role == 'DEPARTMENT_HEAD' and hasattr(user, 'headed_department'):
+            context['headed_department'] = user.headed_department
         return context
 
 class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
