@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Espace Étudiant - Tutore2{% endblock %}
+{% block title %}Espace Étudiant - GORE{% endblock %}
 {% block header_title %}Mon Espace{% endblock %}
 
 {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in slide-up overflow-glow">
     <div class="lg:col-span-2 fade-in delay-1">
         <!-- Status Banner -->
-        <div class="bg-white shadow rounded-lg overflow-hidden mb-6 fade-in delay-2">
+        <div class="bg-white shadow rounded-lg overflow-hidden mb-6 fade-in delay-2 project-card animate">
             <div
-                class="px-6 py-4 flex items-center justify-between {% if enrollment_status == 'APPROVED' %}bg-green-50{% else %}bg-yellow-50{% endif %} fade-in delay-3">
+                class="px-6 py-4 flex items-center justify-between bg-green-50bg-yellow-50 fade-in delay-3">
                 <div class="flex items-center fade-in delay-4">
                     <span class="mr-3">
                         {% if enrollment_status == 'APPROVED' %}
@@ -25,7 +25,7 @@
                         {% endif %}
                     </span>
                     <span
-                        class="font-medium {% if enrollment_status == 'APPROVED' %}text-green-800{% else %}text-yellow-800{% endif %}">
+                        class="font-medium text-green-800text-yellow-800">
                         Statut d'inscription : {{ enrollment_status }}
                     </span>
                 </div>
@@ -33,7 +33,7 @@
         </div>
 
         <!-- Timetable -->
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white shadow rounded-lg p-6 project-card animate">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg font-bold text-gray-900">Emploi du Temps</h3>
                 <span class="text-sm text-gray-500">Semaine en cours</span>
@@ -60,7 +60,7 @@
 
     <!-- Info Card -->
     <div class="lg:col-span-1">
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white shadow rounded-lg p-6 project-card animate">
             <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Mes Informations</h3>
             <div class="space-y-4">
                 <div>

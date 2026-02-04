@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}Chef de Département - Tutore2{% endblock %}
+{% block title %}Chef de Département - GORE{% endblock %}
 {% block header_title %}Tableau de bord : {{ department.name }}{% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 fade-in slide-up overflow-glow">
     <!-- Stat Card 1 -->
-    <div class="bg-white p-6 rounded-lg shadow">
+    <div class="bg-white p-6 rounded-lg shadow project-card animate fade-in delay-1">
         <p class="text-sm font-medium text-gray-500 uppercase">Étudiants à valider</p>
         <p class="mt-1 text-3xl font-semibold text-indigo-600">{{ pending_count }}</p>
     </div>
 </div>
 
-<div class="bg-white shadow rounded-lg p-6">
+<div class="bg-white shadow rounded-lg p-6 project-card animate">
     <h3 class="text-lg font-medium text-gray-900 mb-6">Inscriptions en attente</h3>
     {% if students %}
     <div class="overflow-x-auto">
@@ -33,7 +33,7 @@
                         Action</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200 project-card animate">
                 {% for student in students %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ student.matricule }}

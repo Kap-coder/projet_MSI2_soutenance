@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard Administrateur - Tutore2{% endblock %}
+{% block title %}Dashboard Administrateur - GORE{% endblock %}
 {% block header_title %}Vue d'ensemble{% endblock %}
 
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 fade-in slide-up overflow-glow">
     <!-- Stat Card 1 -->
-    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-1">
-        <div class="flex justify-between items-start fade-in delay-4">
+    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-1 project-card animate">
+        <div class="flex justify-between items-start fade-in delay-4 delay-2">
             <div>
                 <p class="text-sm font-medium text-gray-500 uppercase">Utilisateurs</p>
                 <p class="mt-1 text-3xl font-semibold text-gray-900">{{ total_users }}</p>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Stat Card 2 -->
-    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-2">
+    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-2 project-card animate">
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm font-medium text-gray-500 uppercase">Étudiants</p>
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Stat Card 3 -->
-    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-3">
+    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-accent fade-in delay-3 project-card animate">
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm font-medium text-gray-500 uppercase">Inscriptions en attente</p>
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<div class="bg-white shadow rounded-lg p-6">
+<div class="bg-white shadow rounded-lg p-6 project-card animate">
     <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Actions Rapides</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <a href="#"

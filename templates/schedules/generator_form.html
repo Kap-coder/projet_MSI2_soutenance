@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Générateur d'Horaires - Tutore2{% endblock %}
+{% block title %}Générateur d'Horaires - GORE{% endblock %}
 {% block header_title %}Générateur de Plages Horaires{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto">
-    <div class="bg-white shadow rounded-lg p-6">
+<div class="max-w-3xl mx-auto fade-in slide-up overflow-glow">
+    <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <div class="mb-6 border-l-4 border-yellow-400 bg-yellow-50 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -38,8 +38,8 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Jours à configurer</label>
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                     {% for value, label in form.days.field.choices %}
-                    <div class="relative flex items-start">
-                        <div class="flex items-center h-5">
+                    <div class="relative flex items-start fade-in delay-1">
+                        <div class="flex items-center h-5 fade-in delay-2">
                             <input id="id_days_{{ forloop.counter0 }}" name="days" type="checkbox" value="{{ value }}"
                                 class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                         </div>
@@ -115,7 +115,7 @@
 
             <div class="pt-5 flex justify-end">
                 <a href="{% url 'schedules:list' %}"
-                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3">
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3 project-card animate">
                     Annuler
                 </a>
                 <button type="submit"

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Gestion des Utilisateurs - Tutore2{% endblock %}
+{% block title %}Gestion des Utilisateurs - GORE{% endblock %}
 {% block header_title %}Gestion des Utilisateurs{% endblock %}
 
 {% block content %}
-<div class="bg-white shadow rounded-lg overflow-hidden">
+<div class="bg-white shadow rounded-lg overflow-hidden fade-in slide-up overflow-glow project-card animate">
     <!-- Filters & Actions -->
     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
@@ -50,7 +50,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200 project-card animate">
                 {% for u in users %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -72,11 +72,7 @@
     </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
-        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            {% if u.role == 'ADMIN' %}bg-purple-100 text-purple-800
-                            {% elif u.role == 'TEACHER' %}bg-blue-100 text-blue-800
-                            {% elif u.role == 'STUDENT' %}bg-green-100 text-green-800
-                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 bg-blue-100 text-blue-800 bg-green-100 text-green-800 bg-gray-100 text-gray-800">
             {{ u.get_role_display }}
         </span>
     </td>
@@ -120,7 +116,7 @@
             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                 {% if page_obj.has_previous %}
                 <a href="?page={{ page_obj.previous_page_number }}&role={{ selected_role }}&q={{ query }}"
-                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Précédent</a>
+                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Précédent</a>
                 {% endif %}
 
                 {% for i in paginator.page_range %}
@@ -130,14 +126,14 @@
                     i }}</span>
                 {% else %}
                 <a href="?page={{ i }}&role={{ selected_role }}&q={{ query }}"
-                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{
+                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 project-card animate">{{
                     i }}</a>
                 {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}&role={{ selected_role }}&q={{ query }}"
-                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Suivant</a>
+                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Suivant</a>
                 {% endif %}
             </nav>
         </div>

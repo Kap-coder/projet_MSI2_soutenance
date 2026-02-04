@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Ma Grille de Disponibilités - Tutore2{% endblock %}
+{% block header_title %}Ma Semaine Type{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow rounded-lg overflow-hidden mb-6">
+    <div class="p-6">
+        <div class="mb-6 bg-blue-50 border-l-4 border-blue-400 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                        Cochez les cases correspondant à vos créneaux de disponibilité.
+                        Cette grille met à jour votre <strong>semaine type</strong> (disponibilité permanente).
+                        Pour des exceptions, utilisez l'ajout manuel dans la liste.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" id="availabilityGridForm">
+            {% csrf_token %}
+
+            <div class="flex flex-wrap gap-6 justify-center">
+                {% for day_code, day_slots in grouped_slots.items %}
+                <div class="w-full md:w-64 border rounded-lg overflow-hidden shadow-sm flex flex-col">
+                    <div class="bg-indigo-600 px-4 py-2 border-b">
+                        <h3 class="font-bold text-white text-center uppercase">{{ days_display|get_item:day_code }}</h3>
+                    </div>
+                    <div class="p-4 bg-gray-50 flex-grow">
+                        <div class="space-y-3">
+                            {% for slot in day_slots %}
+                            {% with slot_key=slot.day_of_week|stringformat:"i"|add:"_"|add:slot.start_time|time:"H:i:s" %}
+                            <label
+                                class="flex items-center p-3 bg-white border border-gray-200 rounded-md cursor-pointer hover:bg-indigo-50 transition-colors shadow-sm">
+                                <input type="checkbox" name="selected_slots"
+                                    value="{{ slot.day_of_week }}_{{ slot.start_time|time:'H:i:s' }}_{{ slot.end_time|time:'H:i:s' }}"
+                                    class="focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded" {% if slot_key in active_slots_keys %}checked{% endif %}>
+                                <span class="ml-3 text-sm font-medium text-gray-900">
+                                    {{ slot.start_time|time:"H:i" }} - {{ slot.end_time|time:"H:i" }}
+                                </span>
+                            </label>
+                            {% endwith %}
+                            {% endfor %}
+
+                            {% if not day_slots %}
+                            <p class="text-center text-gray-500 text-sm italic py-4">Aucun créneau configurable pour ce
+                                jour.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-8 flex justify-end sticky bottom-0 bg-white p-4 border-t border-gray-200">
+                <a href="{% url 'availability:list' %}"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3">
+                    Retour à la liste
+                </a>
+                <button type="submit"
+                    class="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Enregistrer ma grille
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

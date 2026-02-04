@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GORE - Choisissez votre portail</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* --- VARIABLES --- */
+:root {
+    --bg-main: #f4f7f6; /* Ton violet très sombre */
+    --accent: #B8F568;  /* Ton vert pomme */
+    --white: #ffffff;
+    --text-muted: #a0a0a0;
+    --card-bg: #2b2531;
+    --text-a: #9ad453;
+    --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--white);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.selection-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* --- HEADER --- */
+.logo {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 5px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 60px;
+}
+
+/* --- CARDS LAYOUT --- */
+.cards-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.select-card {
+    background: var(--card-bg);
+    width: 320px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: var(--transition);
+    position: relative;
+}
+
+/* Effets au survol */
+.select-card:hover {
+    transform: translateY(-15px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(184, 245, 104, 0.1);
+}
+
+.icon-box {
+    font-size: 4rem;
+    margin-bottom: 25px;
+    color: var(--accent);
+    transition: var(--transition);
+}
+
+.select-card:hover .icon-box {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 10px var(--accent));
+}
+
+.select-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.select-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    height: 60px; /* Aligne les textes */
+}
+
+/* Bouton à l'intérieur de la carte */
+.btn-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-select i {
+    transition: transform 0.3s ease;
+}
+
+.select-card:hover .btn-select i {
+    transform: translateX(8px);
+}
+
+/* --- FOOTER --- */
+footer {
+    margin-top: 60px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+footer a {
+    color: var(--text-a);
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid var(--accent);
+}
+
+/* --- ANIMATIONS --- */
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.slide-up {
+    opacity: 0;
+    animation: slideUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    body { height: auto; padding: 40px 0; overflow-y: auto; }
+    .select-card { width: 100%; max-width: 350px; }
+    .logo { font-size: 2.5rem; }
+}
+</style>
+</head>
+<body>
+
+    <div class="selection-wrapper">
+        <header class="fade-in">
+            <h1 class="logo">GE</h1>
+            <p class="subtitle">Plateforme de Generation d'Emploi du temps</p>
+        </header>
+
+        <div class="cards-container">
+            <a href="/auth/login/admin/" class="select-card teacher slide-up">
+                <div class="icon-box">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <h2>Espace Administration</h2>
+                <p>Gérez votre disponibilité, et consultez les emplois du temps.</p>
+                <span class="btn-select">Accéder au portail <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+            <a href="/auth/login/student/" class="select-card student slide-up delay-1">
+                <div class="icon-box">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <h2>Espace Étudiant</h2>
+                <p>Consultez votre emploi du temps, et donnez votre avis.</p>
+                <span class="btn-select">Accéder au portail <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+        </div>
+
+        <footer class="fade-in delay-2">
+            <p>Besoin d'aide ? <a href="#">Contactez l'administration</a></p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.select-card').forEach(card => {
+            card.addEventListener('mousedown', function(e) {
+                this.style.transform = "scale(0.98)";
+            });
+            card.addEventListener('mouseup', function(e) {
+                this.style.transform = "";
+            });
+        });
+    </script>
+</body>
+</html>

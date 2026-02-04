@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Mes Cours - Tutore2{% endblock %}
+{% block title %}Mes Cours - GORE{% endblock %}
 {% block header_title %}Mes Matières{% endblock %}
 
 {% block content %}
-<div class="bg-white shadow rounded-lg overflow-hidden">
+<div class="bg-white shadow rounded-lg overflow-hidden fade-in slide-up overflow-glow project-card animate">
     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
         <h3 class="text-lg font-medium text-gray-900">Liste des cours enseignés</h3>
     </div>
@@ -23,7 +23,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200 project-card animate">
                 {% for course in courses %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">{{ course.code }}</td>

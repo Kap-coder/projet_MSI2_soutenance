@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Disponibilité - Tutore2{% endblock %}
+{% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Disponibilité - GORE{% endblock %}
 {% block header_title %}{% if form.instance.pk %}Modifier Disponibilité{% else %}Nouvelle Disponibilité{% endif %}{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <div class="bg-white shadow rounded-lg p-6">
+<div class="max-w-2xl mx-auto fade-in slide-up overflow-glow">
+    <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <form method="post" class="space-y-6">
             {% csrf_token %}
 
@@ -17,7 +17,7 @@
 
             <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <!-- Day -->
-                <div class="sm:col-span-6">
+                <div class="sm:col-span-6 fade-in delay-1">
                     <label for="{{ form.day_of_week.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 mb-1">Jour de la semaine</label>
                     <select name="{{ form.day_of_week.name }}" id="{{ form.day_of_week.id_for_label }}"
@@ -94,7 +94,7 @@
 
             <div class="pt-5 border-t border-gray-200 flex justify-end">
                 <a href="{% url 'availability:list' %}"
-                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3 project-card animate">
                     Annuler
                 </a>
                 <button type="submit"

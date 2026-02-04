@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Détail Cours - {{ course.code }} - Tutore2{% endblock %}
+{% block title %}Détail Cours - {{ course.code }} - GORE{% endblock %}
 {% block header_title %}Détails du Cours{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+<div class="max-w-4xl mx-auto fade-in slide-up overflow-glow">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6 project-card animate">
         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
                 <h3 class="text-xl leading-6 font-bold text-gray-900">{{ course.name }}</h3>
@@ -37,7 +37,7 @@
                         <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
                             {% for teacher in course.teachers.all %}
                             <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                                <div class="w-0 flex-1 flex items-center">
+                                <div class="w-0 flex-1 flex items-center fade-in delay-1">
                                     <span class="ml-2 flex-1 w-0 truncate">
                                         {{ teacher.get_full_name }}
                                         {% if teacher == user %} (Vous){% endif %}

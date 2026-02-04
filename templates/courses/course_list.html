@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Gestion des Cours - Tutore2{% endblock %}
+{% block title %}Gestion des Cours - GORE{% endblock %}
 {% block header_title %}Gestion des Cours{% endblock %}
 
 {% block content %}
-<div class="bg-white shadow rounded-lg overflow-hidden">
+<div class="bg-white shadow rounded-lg overflow-hidden fade-in slide-up overflow-glow project-card animate">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
         <h3 class="text-lg font-medium text-gray-900">Liste des Cours</h3>
         <a href="{% url 'courses:add' %}"
@@ -25,7 +25,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200 project-card animate">
                 {% for course in courses %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ course.name }}</td>
@@ -67,7 +67,7 @@
                 <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     {% if page_obj.has_previous %}
                     <a href="?page={{ page_obj.previous_page_number }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Précédent</a>
+                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Précédent</a>
                     {% endif %}
 
                     {% for i in paginator.page_range %}
@@ -77,14 +77,14 @@
                         i }}</span>
                     {% else %}
                     <a href="?page={{ i }}"
-                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 project-card animate">{{
                         i }}</a>
                     {% endif %}
                     {% endfor %}
 
                     {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Suivant</a>
+                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Suivant</a>
                     {% endif %}
                 </nav>
             </div>
