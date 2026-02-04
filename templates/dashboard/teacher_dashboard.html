@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Espace Enseignant - Tutore2{% endblock %}
+{% block title %}Espace Enseignant - GORE{% endblock %}
 {% block header_title %}Tableau de bord Enseignant{% endblock %}
 
 {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in slide-up overflow-glow">
     <!-- Colonne Principale -->
     <div class="lg:col-span-2 space-y-6 fade-in delay-1">
-        <div class="bg-white shadow rounded-lg overflow-hidden fade-in delay-2">
+        <div class="bg-white shadow rounded-lg overflow-hidden fade-in delay-2 project-card animate">
             <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center fade-in delay-3">
                 <h3 class="text-lg font-medium text-gray-900">Prochains Cours</h3>
                 <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800">Voir tout</a>
@@ -58,7 +58,7 @@
 
     <!-- Colonne Actions -->
     <div class="lg:col-span-1 space-y-6">
-        <div class="bg-white shadow rounded-lg p-6">
+        <div class="bg-white shadow rounded-lg p-6 project-card animate">
             <h3 class="text-lg font-medium text-gray-900 mb-4">Mes Disponibilités</h3>
             <p class="text-sm text-gray-500 mb-4">Mettez à jour vos créneaux libres pour le prochain semestre.</p>
             <a href="#"

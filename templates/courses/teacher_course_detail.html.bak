@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Détail Cours - {{ course.code }} - Tutore2{% endblock %}
+{% block header_title %}Détails du Cours{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+        <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div>
+                <h3 class="text-xl leading-6 font-bold text-gray-900">{{ course.name }}</h3>
+                <p class="mt-1 max-w-2xl text-sm text-indigo-600 font-medium">{{ course.code }}</p>
+            </div>
+
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Filière / Département</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ course.department.name|default:"Non
+                        spécifié" }} ({{ course.department.code|default:"-" }})</dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Niveau</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{
+                        course.get_level_display|default:"Non spécifié" }}</dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Description</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ course.description|default:"Aucune
+                        description disponible."|linebreaks }}</dd>
+                </div>
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Équipe Pédagogique</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
+                            {% for teacher in course.teachers.all %}
+                            <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                <div class="w-0 flex-1 flex items-center">
+                                    <span class="ml-2 flex-1 w-0 truncate">
+                                        {{ teacher.get_full_name }}
+                                        {% if teacher == user %} (Vous){% endif %}
+                                    </span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="flex justify-start">
+        <a href="{% url 'courses:teacher_list' %}"
+            class="text-indigo-600 hover:text-indigo-900 font-medium flex items-center">
+            <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Retour à la liste des cours
+        </a>
+    </div>
+</div>
+{% endblock %}

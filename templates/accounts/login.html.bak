@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion - Espace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{
+      --bg-dark:#171418;
+      --accent:#B8F568;
+      --card-bg:#ffffff;
+      --muted:#a0a0a0;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif}
+    body{background:#fff}
+    .split{display:flex;min-height:100vh}
+    .left{flex:1;background:var(--bg-dark);color:#fff;display:flex;align-items:center;justify-content:center;padding:40px}
+    .left-inner{max-width:520px;text-align:center}
+    .left h1{font-size:2.6rem;margin-bottom:12px}
+    .left p{color:var(--muted);margin-bottom:36px}
+    .back-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:28px;border:2px solid var(--accent);color:var(--accent);text-decoration:none;font-weight:600}
+    .back-btn i{transform:translateX(-2px)}
+
+    .right{flex:1;background:var(--card-bg);display:flex;align-items:center;justify-content:center;padding:40px}
+    .card{width:100%;max-width:420px}
+    .avatar{font-size:48px;color:var(--bg-dark);text-align:center;margin-bottom:10px}
+    .card h2{text-align:center;margin-bottom:6px}
+    .form-group{margin:18px 0}
+    .form-input{width:100%;padding:14px 16px;border-radius:8px;border:1px solid #e6e6e6;background:#fff}
+    .input-with-icon{position:relative}
+    .input-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;cursor:pointer;color:var(--muted)}
+    .row{display:flex;align-items:center;justify-content:space-between}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .remember{display:flex;align-items:center;gap:8px}
+    .submit{display:block;width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:#000;font-weight:700;cursor:pointer;margin-top:18px}
+
+    @media (max-width:900px){
+      .split{flex-direction:column}
+      .left,.right{padding:30px}
+      .left{order:2}
+      .right{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="split">
+    <aside class="left">
+      <div class="left-inner">
+        <h1>Espace Étudiant</h1>
+        <p>Connecter vous et accédez aux differents Calendrier</p>
+        <a class="back-btn" href="selection_cmpt.html"><i class="fa-solid fa-arrow-left"></i> Retour au choix</a>
+      </div>
+    </aside>
+
+    <main class="right">
+      <div class="card">
+        <div class="avatar"><i class="fa-solid fa-user-graduate"></i></div>
+        <h2 style="text-align:center">Connexion</h2>
+        <form action="/accounts/login" method="POST">
+          <div class="form-group">
+            <input class="form-input" type="text" name="matricule" placeholder="Matricule" autocomplete="username" required>
+          </div>
+          <div class="form-group input-with-icon">
+            <input id="password" class="form-input" type="password" name="password" placeholder="Mot de passe" autocomplete="current-password" required>
+            <button type="button" class="input-icon" id="togglePwd" aria-label="Afficher le mot de passe"><i class="fa-solid fa-eye"></i></button>
+          </div>
+          <div class="form-group row">
+            <label class="remember"><input type="checkbox" name="remember"> <span class="small">Se souvenir</span></label>
+            <a class="small" href="#">Mot de passe oublié ?</a>
+          </div>
+          <button class="submit" type="submit">SE CONNECTER</button>
+        <div style="text-align:center;margin-top:12px">
+          <p class="small">Pas encore de compte étudiant ? <a href="#" style="color:var(--accent);font-weight:700;text-decoration:none;">S'inscrire</a></p>
+        </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const toggle = document.getElementById('togglePwd');
+      const pwd = document.getElementById('password');
+      toggle.addEventListener('click', function(){
+        const icon = this.querySelector('i');
+        if(pwd.type === 'password'){
+          pwd.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+          this.setAttribute('aria-label','Masquer le mot de passe');
+        } else {
+          pwd.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+          this.setAttribute('aria-label','Afficher le mot de passe');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

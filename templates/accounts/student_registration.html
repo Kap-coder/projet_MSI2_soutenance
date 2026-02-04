@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Inscription Étudiant - Tutore2{% endblock %}
+{% block title %}Inscription Étudiant - GORE{% endblock %}
 
 {% block content %}
 <style>
@@ -36,7 +36,7 @@
 
 <div class="min-h-screen bg-custom-dark py-12 px-4">
     <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden project-card animate">
             <div class="bg-gray-50 border-b border-gray-100 p-8 text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-custom-dark rounded-full mb-4">
                     <i class="fas fa-user-graduate text-custom-accent text-2xl"></i>
@@ -49,7 +49,7 @@
                 {% csrf_token %}
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="input-field">
+                    <div class="input-field fade-in delay-1">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Prénom *</label>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="input-field">
+                    <div class="input-field fade-in delay-1">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Email *</label>
                         {{ form.email }}
                         {% if form.email.errors %}
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="input-field">
+                    <div class="input-field fade-in delay-1">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Matricule *</label>
                         {{ form.matricule }}
                         {% if form.matricule.errors %}
@@ -110,7 +110,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="input-field">
+                    <div class="input-field fade-in delay-1">
                         <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Mot de passe *</label>
                         {{ form.password1 }}
                     </div>

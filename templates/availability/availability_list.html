@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}Mes Disponibilités - Tutore2{% endblock %}
+{% block title %}Mes Disponibilités - GORE{% endblock %}
 {% block header_title %}Gestion des Disponibilités{% endblock %}
 
 {% block content %}
-<div class="bg-white shadow rounded-lg overflow-hidden">
+<div class="bg-white shadow rounded-lg overflow-hidden fade-in slide-up overflow-glow project-card animate">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
         <h3 class="text-lg font-medium text-gray-900">
             {% if user.role == 'ADMIN' %}Toutes les disponibilités{% else %}Mes créneaux de disponibilité{% endif %}
         </h3>
         <div class="flex space-x-3">
             <a href="{% url 'availability:grid' %}"
-                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 project-card animate">
                 📅 Vue Grille
             </a>
             <a href="{% url 'availability:add' %}"
@@ -42,7 +42,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-200 project-card animate">
                 {% for avail in availabilities %}
                 <tr>
                     {% if user.role == 'ADMIN' or user.role == 'RESOURCE_MANAGER' %}
@@ -106,7 +106,7 @@
                 <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                     {% if page_obj.has_previous %}
                     <a href="?page={{ page_obj.previous_page_number }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Précédent</a>
+                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Précédent</a>
                     {% endif %}
 
                     {% for i in paginator.page_range %}
@@ -116,14 +116,14 @@
                         i }}</span>
                     {% else %}
                     <a href="?page={{ i }}"
-                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 project-card animate">{{
                         i }}</a>
                     {% endif %}
                     {% endfor %}
 
                     {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}"
-                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Suivant</a>
+                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 project-card animate">Suivant</a>
                     {% endif %}
                 </nav>
             </div>

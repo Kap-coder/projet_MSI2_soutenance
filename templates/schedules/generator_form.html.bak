@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Générateur d'Horaires - Tutore2{% endblock %}
+{% block header_title %}Générateur de Plages Horaires{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="mb-6 border-l-4 border-yellow-400 bg-yellow-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700">
+                        Cette opération va générer automatiquement des créneaux. Les créneaux existants sur les jours
+                        sélectionnés seront conservés (doublons possibles si non gérés manuellement).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <!-- Jours -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Jours à configurer</label>
+                <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    {% for value, label in form.days.field.choices %}
+                    <div class="relative flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="id_days_{{ forloop.counter0 }}" name="days" type="checkbox" value="{{ value }}"
+                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="id_days_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{ label }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if form.days.errors %}
+                <p class="mt-2 text-sm text-red-600">{{ form.days.errors|join:", " }}</p>
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                <!-- Start/End Day -->
+                <div>
+                    <label for="{{ form.day_start_time.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Heure de début journée</label>
+                    {{ form.day_start_time }}
+                </div>
+                <div>
+                    <label for="{{ form.day_end_time.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Heure de fin journée</label>
+                    {{ form.day_end_time }}
+                </div>
+
+                <!-- Durations -->
+                <div>
+                    <label for="{{ form.slot_duration.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Durée cours (min)</label>
+                    <input type="number" name="{{ form.slot_duration.name }}" id="{{ form.slot_duration.id_for_label }}"
+                        value="{{ form.slot_duration.value }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                </div>
+                <div>
+                    <label for="{{ form.break_duration.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Pause inter-cours (min)</label>
+                    <input type="number" name="{{ form.break_duration.name }}"
+                        id="{{ form.break_duration.id_for_label }}" value="{{ form.break_duration.value }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                </div>
+            </div>
+
+            <!-- Lunch Break -->
+            <div class="border-t border-gray-200 pt-6">
+                <div class="flex items-center mb-4">
+                    <input id="{{ form.include_lunch_break.id_for_label }}" name="{{ form.include_lunch_break.name }}"
+                        type="checkbox" {% if form.include_lunch_break.value %}checked{% endif %}
+                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                    <label for="{{ form.include_lunch_break.id_for_label }}"
+                        class="ml-3 block text-sm font-medium text-gray-700">
+                        Inclure une pause déjeuner
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                    <div>
+                        <label for="{{ form.lunch_break_start.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700 mb-1">Début pause déjeuner</label>
+                        {{ form.lunch_break_start }}
+                    </div>
+                    <div>
+                        <label for="{{ form.lunch_break_duration.id_for_label }}"
+                            class="block text-sm font-medium text-gray-700 mb-1">Durée (min)</label>
+                        <input type="number" name="{{ form.lunch_break_duration.name }}"
+                            id="{{ form.lunch_break_duration.id_for_label }}"
+                            value="{{ form.lunch_break_duration.value }}"
+                            class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-5 flex justify-end">
+                <a href="{% url 'schedules:list' %}"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3">
+                    Annuler
+                </a>
+                <button type="submit"
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                    Générer les créneaux
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
