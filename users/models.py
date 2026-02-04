@@ -51,6 +51,42 @@ class Department(models.Model):
         return f"{self.code} - {self.name}"
 
 
+class Filiere(models.Model):
+    """
+    Filière appartenant à un département (ex: Mathématiques, Informatique).
+    """
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='filieres', verbose_name="Département")
+    name = models.CharField(max_length=100, verbose_name="Nom de la filière")
+    code = models.CharField(max_length=20, unique=True, verbose_name="Code de la filière")
+    description = models.TextField(blank=True, verbose_name="Description")
+    
+    class Meta:
+        verbose_name = "Filière"
+        verbose_name_plural = "Filières"
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+
+class Level(models.Model):
+    """
+    Niveau d'étude au sein d'une filière (ex: L1 Math, M2 Info).
+    """
+    filiere = models.ForeignKey(Filiere, on_delete=models.CASCADE, related_name='levels', verbose_name="Filière")
+    name = models.CharField(max_length=50, verbose_name="Nom du niveau (ex: Licence 1)")
+    code = models.CharField(max_length=10, unique=True, verbose_name="Code du niveau (ex: INFO-L1)")
+    description = models.TextField(blank=True, verbose_name="Description")
+    
+    class Meta:
+        verbose_name = "Niveau"
+        verbose_name_plural = "Niveaux"
+        ordering = ['code']
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+
 class LoginLog(models.Model):
     '''
     Log de connexions pour audit.

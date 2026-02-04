@@ -65,6 +65,11 @@ class ScheduleGeneratorView(LoginRequiredMixin, AdminRequiredMixin, FormView):
         
         generated_count = 0
         
+        # DELETE existing slots for the selected days to ensure a fresh generation
+        # conversion of string days from form to integers
+        days_ints = [int(d) for d in days]
+        GlobalTimeSlot.objects.filter(day_of_week__in=days_ints).delete()
+        
         for day in days:
             current_time = start_min
             

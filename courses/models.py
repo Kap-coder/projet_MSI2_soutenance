@@ -9,18 +9,14 @@ class Course(models.Model):
     code = models.CharField(max_length=20, unique=True, verbose_name="Code du cours")
     
     # New fields
-    department = models.ForeignKey('users.Department', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Filière/Département", related_name='courses')
+    # Updated fields for new hierarchy
+    level = models.ForeignKey('users.Level', on_delete=models.CASCADE, verbose_name="Niveau", related_name='courses', null=True, blank=True)
     teachers = models.ManyToManyField('users.User', limit_choices_to={'role': 'TEACHER'}, blank=True, verbose_name="Enseignants", related_name='courses_taught')
     
-    LEVEL_CHOICES = (
-        ('L1', 'Licence 1'),
-        ('L2', 'Licence 2'),
-        ('L3', 'Licence 3'),
-        ('M1', 'Master 1'),
-        ('M2', 'Master 2'),
-        ('D', 'Doctorat'),
-    )
-    level = models.CharField(max_length=5, choices=LEVEL_CHOICES, blank=True, null=True, verbose_name="Niveau")
+    # LEVEL_CHOICES deleted as we now use a dedicated model
+
+    
+    total_hours = models.PositiveIntegerField(default=0, verbose_name="Volume Horaire Total (Semestre)")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

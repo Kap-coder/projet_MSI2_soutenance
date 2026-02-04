@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Cours - Tutore2{% endblock %}
-{% block header_title %}{% if form.instance.pk %}Modifier le cours : {{ form.instance.code }}{% else %}Nouveau Cours{% endif %}{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier le cours : {{ form.instance.code }}{% else %}Nouveau Cours{%
+endif %}{% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto">
@@ -43,12 +44,67 @@
                     {% endif %}
                 </div>
 
+                <!-- Department Selector (Helper) -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.department.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">{{ form.department.label }}</label>
+                    {{ form.department }}
+                </div>
+
+                <!-- Filiere Selector (Helper) -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.filiere.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{
+                        form.filiere.label }}</label>
+                    {{ form.filiere }}
+                </div>
+
+                <!-- Level Selector (Actual Field) -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.level.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Niveau</label>
+                    {{ form.level }}
+                    {% if form.level.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.level.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Total Hours -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.total_hours.id_for_label }}"
+                        class="block text-sm font-medium text-gray-700 mb-1">Volume Horaire Total</label>
+                    <input type="number" name="{{ form.total_hours.name }}" id="{{ form.total_hours.id_for_label }}"
+                        value="{{ form.total_hours.value|default:'0' }}"
+                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                </div>
+
                 <!-- Description -->
                 <div class="sm:col-span-6">
                     <label for="{{ form.description.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                     <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" rows="4"
                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">{{ form.description.value|default:'' }}</textarea>
+                </div>
+
+                <!-- Teachers -->
+                <div class="sm:col-span-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Équipe Pédagogique</label>
+                    <div class="border border-gray-300 rounded-md p-4 max-h-60 overflow-y-auto bg-gray-50">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {% for value, label in form.teachers.field.choices %}
+                            <div class="relative flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="id_teachers_{{ forloop.counter0 }}" name="teachers" type="checkbox"
+                                        value="{{ value }}" {% if value in form.teachers.value %}checked{% endif %}
+                                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="id_teachers_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{
+                                        label }}</label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -60,10 +116,88 @@
                 </a>
                 <button type="submit"
                     class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    {% if form.instance.pk %}Enregistrer les modifications{% else %}Ajouter le cours{% endif %}
+                    {% if form.instance.pk %}Enregistrer{% else %}Ajouter{% endif %}
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deptSelect = document.getElementById('{{ form.department.id_for_label }}');
+        const filiereSelect = document.getElementById('{{ form.filiere.id_for_label }}');
+        const levelSelect = document.getElementById('{{ form.level.id_for_label }}');
+
+        // Apply Tailwind classes
+        [deptSelect, filiereSelect, levelSelect].forEach(el => {
+            if (el) el.className = "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border";
+        });
+
+        // --- Dynamic Filter Logic ---
+        // We need the relational data to filter. 
+        // We will fetch it from a clean JSON structure injected here.
+
+        // This data structure maps valid IDs for hierarchy
+        const filiereData = {
+            {% for filiere in form.filiere.field.queryset %}
+        "{{ filiere.id }}": { "deptId": "{{ filiere.department.id }}", "name": "{{ filiere.name }}" },
+        {% endfor %}
+    };
+
+    const levelData = {
+            {% for level in form.level.field.queryset %}
+    "{{ level.id }}": { "filiereId": "{{ level.filiere.id }}", "name": "{{ level.name }}" },
+    {% endfor %}
+        };
+
+    // Helper to reset and populate select
+    function updateSelect(selectElement, optionsMap, filterKey, filterValue) {
+        const currentVal = selectElement.value;
+        selectElement.innerHTML = '<option value="">---------</option>';
+
+        for (const [id, data] of Object.entries(optionsMap)) {
+            if (!filterValue || data[filterKey] == filterValue) {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = data.name; // Simple name, or we could use the label from Django if we had it mapped
+                // Re-select if preserving selection
+                if (id === currentVal) option.selected = true;
+                selectElement.appendChild(option);
+            }
+        }
+    }
+
+    // 1. When Department changes -> Filter Filiere
+    deptSelect.addEventListener('change', function () {
+        const deptId = this.value;
+        // Clear Level as well when dept changes (cascading up)
+        levelSelect.innerHTML = '<option value="">---------</option>';
+        updateSelect(filiereSelect, filiereData, 'deptId', deptId);
+    });
+
+    // 2. When Filiere changes -> Filter Level
+    filiereSelect.addEventListener('change', function () {
+        const filiereId = this.value;
+        updateSelect(levelSelect, levelData, 'filiereId', filiereId);
+    });
+
+    // Initial Run to set correct state if editing
+    if (deptSelect.value) {
+        // Trigger manual update to filter sans clearing value
+        // Simplification: just run the logic, passing current values is handled by 'updateSelect' logic if we improved it
+        // But 'updateSelect' above currently resets innerHTML. 
+        // To support "Edit" mode correctly, we should check existing value before wiping.
+        // Implemented in updateSelect via 'currentVal'.
+        updateSelect(filiereSelect, filiereData, 'deptId', deptSelect.value);
+    }
+    if (filiereSelect.value) {
+        updateSelect(levelSelect, levelData, 'filiereId', filiereSelect.value);
+    }
+    });
+</script>
+
+<!-- Simplified Filtering Logic via JSON Injection (Optional Optimization) -->
+<!-- We would need to pass this data from the view. For now, valid Dropdowns are present. -->
+
 {% endblock %}

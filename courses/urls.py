@@ -5,6 +5,7 @@ app_name = 'courses'
 
 urlpatterns = [
     path('', views.CourseListView.as_view(), name='list'),
+    path('<int:pk>/', views.CourseDetailView.as_view(), name='detail'),
     path('teacher/', views.TeacherCourseListView.as_view(), name='teacher_list'),
     path('teacher/<int:pk>/', views.TeacherCourseDetailView.as_view(), name='teacher_detail'),
     path('add/', views.CourseCreateView.as_view(), name='add'),

@@ -20,6 +20,11 @@ class CourseListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     context_object_name = 'courses'
     paginate_by = 10
 
+class CourseDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
+    model = Course
+    template_name = 'courses/course_detail.html'
+    context_object_name = 'course'
+
 class CourseCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
     model = Course
     form_class = CourseForm

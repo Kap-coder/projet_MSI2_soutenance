@@ -28,10 +28,10 @@
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">{{ course.code }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ course.name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ course.department.name|default:"-"
-                        }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-                        course.get_level_display|default:"-" }}</td>
+                        course.level.filiere.name|default:"-" }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ course.level.name|default:"-" }}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <a href="{% url 'courses:teacher_detail' course.pk %}"
                             class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-full">
