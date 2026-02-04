@@ -28,4 +28,5 @@ urlpatterns = [
     path('departments/', include('users.urls_departments')),
     path('manage/users/', include('users.urls_manage')),
     path('availability/', include('availability.urls')),
+    path('schedules/', include('schedules.urls')),
 ]

@@ -33,3 +33,31 @@ class Schedule(models.Model):
 
     def __str__(self):
         return f"{self.course} - {self.get_day_of_week_display()} {self.start_time}"
+
+
+class GlobalTimeSlot(models.Model):
+    """
+    Définit la structure horaire de l'établissement (Slots valides).
+    Utilisé pour la grille de disponibilité et la validation des emplois du temps.
+    """
+    day_of_week = models.IntegerField(choices=[
+        (0, 'Lundi'), (1, 'Mardi'), (2, 'Mercredi'), 
+        (3, 'Jeudi'), (4, 'Vendredi'), (5, 'Samedi'), (6, 'Dimanche')
+    ], verbose_name="Jour")
+    start_time = models.TimeField(verbose_name="Heure de début")
+    end_time = models.TimeField(verbose_name="Heure de fin")
+    is_break = models.BooleanField(default=False, verbose_name="Est une pause")
+    
+    class Meta:
+        verbose_name = "Plage Horaire Globale"
+        verbose_name_plural = "Plages Horaires Globales"
+        ordering = ['day_of_week', 'start_time']
+        
+    def __str__(self):
+        type_str = "Pause" if self.is_break else "Cours"
+        return f"{self.get_day_of_week_display()} : {self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')} ({type_str})"
+
+    def clean(self):
+        if self.start_time >= self.end_time:
+            raise ValidationError("L'heure de début doit être antérieure à l'heure de fin.")
+
