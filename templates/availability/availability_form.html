@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Disponibilité - GORE{% endblock %}
-{% block header_title %}{% if form.instance.pk %}Modifier Disponibilité{% else %}Nouvelle Disponibilité{% endif %}{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier Disponibilité{% else %}Nouvelle Disponibilité{% endif %}{%
+endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto fade-in slide-up overflow-glow">
+<div class="w-full fade-in slide-up overflow-glow">
     <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <form method="post" class="space-y-6">
             {% csrf_token %}
@@ -23,7 +24,9 @@
                     <select name="{{ form.day_of_week.name }}" id="{{ form.day_of_week.id_for_label }}"
                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
                         {% for value, label in form.day_of_week.field.choices %}
-                        <option value="{{ value }}" {% if form.day_of_week.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+                        <option value="{{ value }}" {% if
+                            form.day_of_week.value|stringformat:"s"==value|stringformat:"s" %}selected{% endif %}>{{
+                            label }}</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -1,10 +1,30 @@
 <style>
-/* Sidebar color overrides (scoped) */
-#sidebar { background: #171418 !important; color: #fbfdf8; }
-#sidebar .bg-white { background: #171418 !important; color: #e6f0db !important; }
-#sidebar a:hover, #sidebar a:focus, #sidebar a:active { color: #B8F568 !important; background-color: rgba(184,245,104,0.06) !important; }
-#sidebar a:hover svg, #sidebar a:hover .group-hover\:text-indigo-600 { color: #B8F568 !important; }
-#sidebar a { transition: color .18s ease, background-color .18s ease, transform .18s ease; }
+    /* Sidebar color overrides (scoped) */
+    #sidebar {
+        background: #171418 !important;
+        color: #fbfdf8;
+    }
+
+    #sidebar .bg-white {
+        background: #171418 !important;
+        color: #e6f0db !important;
+    }
+
+    #sidebar a:hover,
+    #sidebar a:focus,
+    #sidebar a:active {
+        color: #B8F568 !important;
+        background-color: rgba(184, 245, 104, 0.06) !important;
+    }
+
+    #sidebar a:hover svg,
+    #sidebar a:hover .group-hover\:text-indigo-600 {
+        color: #B8F568 !important;
+    }
+
+    #sidebar a {
+        transition: color .18s ease, background-color .18s ease, transform .18s ease;
+    }
 </style>
 <aside id="sidebar"
     class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-screen border-r border-gray-200">
@@ -59,6 +79,26 @@
             </svg>
             Salles
         </a>
+        <!-- CRUD Academic -->
+        <a href="{% url 'academic:filiere_list' %}"
+            class="flex items-center px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md group">
+            <svg class="mr-3 h-5 w-5 text-gray-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Filières
+        </a>
+        <a href="{% url 'academic:level_list' %}"
+            class="flex items-center px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md group">
+            <svg class="mr-3 h-5 w-5 text-gray-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+            Niveaux
+        </a>
+
         <a href="{% url 'courses:list' %}"
             class="flex items-center px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md group">
             <svg class="mr-3 h-5 w-5 text-gray-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
@@ -68,14 +108,14 @@
             </svg>
             Cours
         </a>
-        <a href="#"
+        <a href="{% url 'schedules:list' %}"
             class="flex items-center px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md group">
             <svg class="mr-3 h-5 w-5 text-gray-500 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            Emplois du temps
+            Structure Horaire
         </a>
 
         {% elif user.role == 'TEACHER' %}

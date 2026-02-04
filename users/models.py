@@ -51,6 +51,24 @@ class Department(models.Model):
         return f"{self.code} - {self.name}"
 
 
+class Level(models.Model):
+    """
+    Niveau d'étude global (ex: L1, L2, M1, M2).
+    Ce sont des définitions standards qui peuvent être réutilisées par plusieurs filières.
+    """
+    name = models.CharField(max_length=50, verbose_name="Nom du niveau (ex: Licence 1)")
+    code = models.CharField(max_length=10, unique=True, verbose_name="Code du niveau (ex: L1)")
+    description = models.TextField(blank=True, verbose_name="Description")
+    
+    class Meta:
+        verbose_name = "Niveau"
+        verbose_name_plural = "Niveaux"
+        ordering = ['code']
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+
 class Filiere(models.Model):
     """
     Filière appartenant à un département (ex: Mathématiques, Informatique).
@@ -58,30 +76,13 @@ class Filiere(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='filieres', verbose_name="Département")
     name = models.CharField(max_length=100, verbose_name="Nom de la filière")
     code = models.CharField(max_length=20, unique=True, verbose_name="Code de la filière")
+    levels = models.ManyToManyField(Level, related_name='filieres', verbose_name="Niveaux disponibles")
     description = models.TextField(blank=True, verbose_name="Description")
     
     class Meta:
         verbose_name = "Filière"
         verbose_name_plural = "Filières"
         ordering = ['name']
-
-    def __str__(self):
-        return f"{self.code} - {self.name}"
-
-
-class Level(models.Model):
-    """
-    Niveau d'étude au sein d'une filière (ex: L1 Math, M2 Info).
-    """
-    filiere = models.ForeignKey(Filiere, on_delete=models.CASCADE, related_name='levels', verbose_name="Filière")
-    name = models.CharField(max_length=50, verbose_name="Nom du niveau (ex: Licence 1)")
-    code = models.CharField(max_length=10, unique=True, verbose_name="Code du niveau (ex: INFO-L1)")
-    description = models.TextField(blank=True, verbose_name="Description")
-    
-    class Meta:
-        verbose_name = "Niveau"
-        verbose_name_plural = "Niveaux"
-        ordering = ['code']
 
     def __str__(self):
         return f"{self.code} - {self.name}"

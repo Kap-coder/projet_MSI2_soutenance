@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Utilisateur - GORE{% endblock %}
-{% block header_title %}{% if form.instance.pk %}Modifier : {{ form.instance.username }}{% else %}Nouvel Utilisateur{%endif %}{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier : {{ form.instance.username }}{% else %}Nouvel
+Utilisateur{%endif %}{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto fade-in slide-up overflow-glow">
+<div class="w-full fade-in slide-up overflow-glow">
     <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <form method="post" class="space-y-6">
             {% csrf_token %}

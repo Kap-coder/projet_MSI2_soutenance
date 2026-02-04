@@ -4,11 +4,14 @@ from users.models import Department, Filiere, Level
 
 class CourseForm(forms.ModelForm):
     department = forms.ModelChoiceField(queryset=Department.objects.all(), required=False, label="Département")
-    filiere = forms.ModelChoiceField(queryset=Filiere.objects.all(), required=False, label="Filière")
+    # Filiere is now a real field in model, no need to declare it as helper if it's in Meta.fields unless filtering issues.
+    # But we want to customize label or queryset? keeping it in Meta is enough usually, but we declared it manually before.
+    # Let's remove the manual field definition if it conflicts or keep it.
+    # ModelForm will generate it. I'll remove the manual definition to avoid duplication/issues, but I need to ensure 'department' helper is valid.
     
     class Meta:
         model = Course
-        fields = ['name', 'code', 'description', 'level', 'total_hours', 'teachers']
+        fields = ['name', 'code', 'description', 'filiere', 'level', 'total_hours', 'teachers']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 3}),
             'teachers': forms.CheckboxSelectMultiple(),
@@ -17,18 +20,22 @@ class CourseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Add data attributes to options for JS filtering
-        # Note: This is a bit heavy for large datasets but simple for this scale
+        # Inject JSON-friendly data for JS
+        # Filiere -> Department mapping
+        # Level -> Filieres mapping (M2M)
         
-        # Pre-fetch for performance
-        filieres = Filiere.objects.select_related('department').all()
-        levels = Level.objects.select_related('filiere').all()
+        # Note: Iterate deeply might be slow if many levels/filieres. 
+        # For M2M, we need to know for each level, which filieres allow it.
+        levels = Level.objects.prefetch_related('filieres').all()
         
-        # We can't easily add data attributes to Django ChoiceWidget options standardly without subclassing.
-        # So we will pass the mapping to the template via the form instance or context??
-        # Hack: attributes on the widget itself don't help for individual options.
+        # We can't easily add data attributes to the widget.
+        # We will assume the template iterates over queryset to build JSON.
+        # But wait, the form field queryset is what matters.
+        self.fields['filiere'].queryset = Filiere.objects.select_related('department').all()
+        self.fields['level'].queryset = levels
         
-        # Alternative: We just set the initial values as done before.
-        if self.instance.pk and self.instance.level:
-            self.initial['filiere'] = self.instance.level.filiere
-            self.initial['department'] = self.instance.level.filiere.department
+        # Initial values for helpers
+        if self.instance.pk and self.instance.filiere:
+            self.initial['filiere'] = self.instance.filiere
+            self.initial['department'] = self.instance.filiere.department
+        # If created via helper flow, department is already set by JS potentially, but here we handle "Edit" view load.

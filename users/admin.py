@@ -21,9 +21,9 @@ class FiliereAdmin(admin.ModelAdmin):
     list_display = ['code', 'name', 'department']
     list_filter = ['department']
     search_fields = ['code', 'name']
+    filter_horizontal = ['levels'] # For M2M
 
 @admin.register(Level)
 class LevelAdmin(admin.ModelAdmin):
-    list_display = ['code', 'name', 'filiere']
-    list_filter = ['filiere__department', 'filiere']
+    list_display = ['code', 'name']
     search_fields = ['code', 'name']

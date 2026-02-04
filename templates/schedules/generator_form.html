@@ -4,7 +4,7 @@
 {% block header_title %}Générateur de Plages Horaires{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto fade-in slide-up overflow-glow">
+<div class="w-full fade-in slide-up overflow-glow">
     <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <div class="mb-6 border-l-4 border-yellow-400 bg-yellow-50 p-4">
             <div class="flex">
@@ -44,7 +44,8 @@
                                 class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                         </div>
                         <div class="ml-3 text-sm">
-                            <label for="id_days_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{ label }}</label>
+                            <label for="id_days_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{ label
+                                }}</label>
                         </div>
                     </div>
                     {% endfor %}

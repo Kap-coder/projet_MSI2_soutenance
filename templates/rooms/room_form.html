@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} une Salle - GORE{% endblock %}
-{% block header_title %}{% if form.instance.pk %}Modifier la salle : {{ form.instance.name }}{% else %}Nouvelle Salle{% endif %}{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier la salle : {{ form.instance.name }}{% else %}Nouvelle Salle{%
+endif %}{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto fade-in slide-up overflow-glow">
+<div class="w-full fade-in slide-up overflow-glow">
     <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <form method="post" class="space-y-6">
             {% csrf_token %}
@@ -37,7 +38,7 @@
                     <select name="{{ form.room_type.name }}" id="{{ form.room_type.id_for_label }}"
                         class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
                         {% for value, label in form.room_type.field.choices %}
-                        <option value="{{ value }}" {% if form.room_type.value == value %}selected{% endif %}>{{ label }}
+                        <option value="{{ value }}" {% if form.room_type.value==value %}selected{% endif %}>{{ label }}
                         </option>
                         {% endfor %}
                     </select>

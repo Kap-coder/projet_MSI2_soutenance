@@ -10,6 +10,7 @@ class Course(models.Model):
     
     # New fields
     # Updated fields for new hierarchy
+    filiere = models.ForeignKey('users.Filiere', on_delete=models.CASCADE, verbose_name="Filière", related_name='courses', null=True, blank=True)
     level = models.ForeignKey('users.Level', on_delete=models.CASCADE, verbose_name="Niveau", related_name='courses', null=True, blank=True)
     teachers = models.ManyToManyField('users.User', limit_choices_to={'role': 'TEACHER'}, blank=True, verbose_name="Enseignants", related_name='courses_taught')
     

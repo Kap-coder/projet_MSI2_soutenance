@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %} un Cours - GORE{% endblock %}
-{% block header_title %}{% if form.instance.pk %}Modifier le cours : {{ form.instance.code }}{% else %}Nouveau Cours{% endif %}{% endblock %}
+{% block header_title %}{% if form.instance.pk %}Modifier le cours : {{ form.instance.code }}{% else %}Nouveau Cours{%
+endif %}{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto fade-in slide-up overflow-glow">
+<div class="w-full fade-in slide-up overflow-glow">
     <div class="bg-white shadow rounded-lg p-6 project-card animate">
         <form method="post" class="space-y-6">
             {% csrf_token %}
@@ -52,7 +53,8 @@
 
                 <!-- Filiere Selector (Helper) -->
                 <div class="sm:col-span-3">
-                    <label for="{{ form.filiere.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ form.filiere.label }}</label>
+                    <label for="{{ form.filiere.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{
+                        form.filiere.label }}</label>
                     {{ form.filiere }}
                 </div>
 
@@ -96,7 +98,8 @@
                                         class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                                 </div>
                                 <div class="ml-3 text-sm">
-                                    <label for="id_teachers_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{ label }}</label>
+                                    <label for="id_teachers_{{ forloop.counter0 }}" class="font-medium text-gray-700">{{
+                                        label }}</label>
                                 </div>
                             </div>
                             {% endfor %}
@@ -131,11 +134,8 @@
             if (el) el.className = "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border";
         });
 
-        // --- Dynamic Filter Logic ---
-        // We need the relational data to filter. 
-        // We will fetch it from a clean JSON structure injected here.
+        // --- Dynamic Filter Logic (Refactored for M2M) ---
 
-        // This data structure maps valid IDs for hierarchy
         const filiereData = {
             {% for filiere in form.filiere.field.queryset %}
         "{{ filiere.id }}": { "deptId": "{{ filiere.department.id }}", "name": "{{ filiere.name }}" },
@@ -144,52 +144,65 @@
 
     const levelData = {
             {% for level in form.level.field.queryset %}
-    "{{ level.id }}": { "filiereId": "{{ level.filiere.id }}", "name": "{{ level.name }}" },
+    "{{ level.id }}": {
+        "filiereIds": [{% for f in level.filieres.all %} "{{ f.id }}", {% endfor %}],
+    "name": "{{ level.name }}" 
+            },
     {% endfor %}
         };
 
     // Helper to reset and populate select
-    function updateSelect(selectElement, optionsMap, filterKey, filterValue) {
+    function updateSelect(selectElement, optionsMap, filterKey, filterValue, isArrayCheck = false) {
         const currentVal = selectElement.value;
         selectElement.innerHTML = '<option value="">---------</option>';
 
         for (const [id, data] of Object.entries(optionsMap)) {
-            if (!filterValue || data[filterKey] == filterValue) {
+            let match = false;
+            if (!filterValue) match = true; // Show all if no filter? Or show none? Usually none if parent selected.
+            else if (isArrayCheck) {
+                // Check if filterValue is present in data[filterKey] array
+                if (data[filterKey] && data[filterKey].includes(filterValue)) match = true;
+            } else {
+                if (data[filterKey] == filterValue) match = true;
+            }
+
+            if (match) {
                 const option = document.createElement('option');
                 option.value = id;
-                option.textContent = data.name; // Simple name, or we could use the label from Django if we had it mapped
-                // Re-select if preserving selection
+                option.textContent = data.name;
                 if (id === currentVal) option.selected = true;
                 selectElement.appendChild(option);
             }
         }
     }
 
-    // 1. When Department changes -> Filter Filiere
+    // 1. When Department changes -> Filter Filiere (1-to-N)
     deptSelect.addEventListener('change', function () {
         const deptId = this.value;
-        // Clear Level as well when dept changes (cascading up)
-        levelSelect.innerHTML = '<option value="">---------</option>';
-        updateSelect(filiereSelect, filiereData, 'deptId', deptId);
+        levelSelect.innerHTML = '<option value="">---------</option>'; // Clear levels
+        if (deptId) {
+            updateSelect(filiereSelect, filiereData, 'deptId', deptId);
+        } else {
+            filiereSelect.innerHTML = '<option value="">---------</option>';
+        }
     });
 
-    // 2. When Filiere changes -> Filter Level
+    // 2. When Filiere changes -> Filter Level (M2M)
     filiereSelect.addEventListener('change', function () {
         const filiereId = this.value;
-        updateSelect(levelSelect, levelData, 'filiereId', filiereId);
+        if (filiereId) {
+            updateSelect(levelSelect, levelData, 'filiereIds', filiereId, true);
+        } else {
+            levelSelect.innerHTML = '<option value="">---------</option>';
+        }
     });
 
-    // Initial Run to set correct state if editing
+    // Initial Run (Edit Mode)
     if (deptSelect.value) {
-        // Trigger manual update to filter sans clearing value
-        // Simplification: just run the logic, passing current values is handled by 'updateSelect' logic if we improved it
-        // But 'updateSelect' above currently resets innerHTML. 
-        // To support "Edit" mode correctly, we should check existing value before wiping.
-        // Implemented in updateSelect via 'currentVal'.
         updateSelect(filiereSelect, filiereData, 'deptId', deptSelect.value);
     }
     if (filiereSelect.value) {
-        updateSelect(levelSelect, levelData, 'filiereId', filiereSelect.value);
+        updateSelect(levelSelect, levelData, 'filiereIds', filiereSelect.value, true);
     }
     });
 </script>

@@ -242,3 +242,65 @@ class UserDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
     model = User
     template_name = 'users_manage/user_confirm_delete.html'
     success_url = reverse_lazy('manage_users:list')
+
+
+# --- Academic Structure Views (Filiere & Level) ---
+from .models import Filiere, Level
+from django import forms
+
+class FiliereListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
+    model = Filiere
+    template_name = 'academic/filiere_list.html'
+    context_object_name = 'filieres'
+    paginate_by = 10
+
+class FiliereCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+    model = Filiere
+    template_name = 'academic/filiere_form.html'
+    fields = ['name', 'code', 'department', 'levels', 'description']
+    success_url = reverse_lazy('academic:filiere_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['levels'].widget = forms.CheckboxSelectMultiple()
+        return form
+
+class FiliereUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+    model = Filiere
+    template_name = 'academic/filiere_form.html'
+    fields = ['name', 'code', 'department', 'levels', 'description']
+    success_url = reverse_lazy('academic:filiere_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['levels'].widget = forms.CheckboxSelectMultiple()
+        return form
+
+class FiliereDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
+    model = Filiere
+    template_name = 'academic/filiere_confirm_delete.html'
+    success_url = reverse_lazy('academic:filiere_list')
+
+
+class LevelListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
+    model = Level
+    template_name = 'academic/level_list.html'
+    context_object_name = 'levels'
+    paginate_by = 10
+
+class LevelCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+    model = Level
+    template_name = 'academic/level_form.html'
+    fields = ['name', 'code', 'description']
+    success_url = reverse_lazy('academic:level_list')
+
+class LevelUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+    model = Level
+    template_name = 'academic/level_form.html'
+    fields = ['name', 'code', 'description']
+    success_url = reverse_lazy('academic:level_list')
+
+class LevelDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
+    model = Level
+    template_name = 'academic/level_confirm_delete.html'
+    success_url = reverse_lazy('academic:level_list')
