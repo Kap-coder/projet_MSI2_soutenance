@@ -18,9 +18,9 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filiere</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durée</th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
                     </th>
                 </tr>
@@ -29,8 +29,7 @@
                 {% for course in courses %}
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ course.name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{
-                        course.level.filiere.name|default:"-" }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ course.level.filiere.name|default:"-" }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ course.level.name|default:"-" }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ course.total_hours }}h</td>
@@ -59,8 +58,7 @@
             <div>
                 <p class="text-sm text-gray-700">
                     Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à <span
-                        class="font-medium">{{ page_obj.end_index }}</span> sur <span class="font-medium">{{
-                        paginator.count }}</span> résultats
+                        class="font-medium">{{ page_obj.end_index }}</span> sur <span class="font-medium">{{ paginator.count }}</span> résultats
                 </p>
             </div>
             <div>
@@ -77,8 +75,7 @@
                         i }}</span>
                     {% else %}
                     <a href="?page={{ i }}"
-                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 project-card animate">{{
-                        i }}</a>
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 project-card animate">{{ i }}</a>
                     {% endif %}
                     {% endfor %}
 

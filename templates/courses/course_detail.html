@@ -52,14 +52,11 @@
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Filière / Département</dt>
-                            <dd class="mt-1 text-sm text-gray-900 font-semibold">{{
-                                course.level.filiere.name|default:"-" }} / {{
-                                course.level.filiere.department.name|default:"-" }}</dd>
+                            <dd class="mt-1 text-sm text-gray-900 font-semibold">{{ course.level.filiere.name|default:"-" }} / {{ course.level.filiere.department.name|default:"-" }}</dd>
                         </div>
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Niveau</dt>
-                            <dd class="mt-1 text-sm text-gray-900">{{ course.level.name|default:"-" }} ({{
-                                course.level.code }})</dd>
+                            <dd class="mt-1 text-sm text-gray-900">{{ course.level.name|default:"-" }} ({{ course.level.code }})</dd>
                         </div>
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Volume Horaire</dt>
@@ -108,8 +105,7 @@
                         class="px-4 py-4 flex items-center space-x-3 hover:bg-gray-50 transition duration-150 ease-in-out">
                         <div class="flex-shrink-0">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100">
-                                <span class="text-xs font-medium leading-none text-indigo-700">{{
-                                    teacher.first_name|first }}{{ teacher.last_name|first }}</span>
+                                <span class="text-xs font-medium leading-none text-indigo-700">{{ teacher.first_name|first }}{{ teacher.last_name|first }}</span>
                             </span>
                         </div>
                         <div class="flex-1 min-w-0">
