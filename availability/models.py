@@ -20,6 +20,8 @@ class TeacherAvailability(models.Model):
     day_of_week = models.IntegerField(choices=DAYS_OF_WEEK, verbose_name="Jour de la semaine")
     start_time = models.TimeField(verbose_name="Heure de début")
     end_time = models.TimeField(verbose_name="Heure de fin")
+    start_date = models.DateField(null=True, blank=True, verbose_name="Date de début (Période)")
+    end_date = models.DateField(null=True, blank=True, verbose_name="Date de fin (Période)")
     is_active = models.BooleanField(default=True, verbose_name="Actif")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
