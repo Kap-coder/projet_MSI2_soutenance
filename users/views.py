@@ -11,6 +11,13 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 
+@require_http_methods(["GET"])
+def selection_view(request):
+    """Affiche la page de sélection de compte (statique)."""
+    return render(request, 'accounts/selection_cmpt.html')
+
+
+
 # --- Mixins ---
 
 class AdminRequiredMixin(UserPassesTestMixin):
@@ -47,6 +54,54 @@ def login_view(request):
 
 
 @require_http_methods(["GET", "POST"])
+
+@require_http_methods(["GET", "POST"])
+def login_student_view(request):
+    """Vue de connexion dédiée aux étudiants (GET/POST)."""
+    if request.user.is_authenticated:
+        return redirect('dashboard:home')
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Bienvenue {user.get_full_name()}!")
+                return redirect('dashboard:home')
+            else:
+                messages.error(request, "Identifiants invalides.")
+        else:
+            messages.error(request, "Erreur de connexion.")
+    else:
+        form = CustomAuthenticationForm()
+    return render(request, 'accounts/login_student.html', {'form': form})
+
+
+@require_http_methods(["GET", "POST"])
+def login_admin_view(request):
+    """Vue de connexion pour enseignants et personnel administratif."""
+    if request.user.is_authenticated:
+        return redirect('dashboard:home')
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Bienvenue {user.get_full_name()}!")
+                return redirect('dashboard:home')
+            else:
+                messages.error(request, "Identifiants invalides.")
+        else:
+            messages.error(request, "Erreur de connexion.")
+    else:
+        form = CustomAuthenticationForm()
+    return render(request, 'accounts/login_admin.html', {'form': form})
+
 def register_view(request):
     """Vue d'inscription pour les étudiants."""
     if request.user.is_authenticated:

@@ -3,149 +3,153 @@
 {% block title %}Inscription Étudiant - Tutore2{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 py-12">
+<style>
+    :root {
+        --bg-dark: #171418;
+        --accent: #B8F568;
+        --card-bg: #ffffff;
+    }
+    .bg-custom-dark { background-color: var(--bg-dark); }
+    .text-custom-accent { color: var(--accent); }
+    .btn-custom-accent { 
+        background-color: var(--accent); 
+        color: #000;
+        transition: transform 0.2s;
+    }
+    .btn-custom-accent:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+    }
+    .input-field input, .input-field select {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1px solid #e6e6e6;
+        background: #fff;
+        outline: none;
+    }
+    .input-field input:focus {
+        border-color: var(--accent);
+        ring: 2px solid var(--accent);
+    }
+</style>
+
+<div class="min-h-screen bg-custom-dark py-12 px-4">
     <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-lg shadow-xl p-8">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">Inscription Étudiant</h2>
-            <p class="text-center text-gray-600 mb-8">Créez votre compte étudiant et attendez la validation du chef de département</p>
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-gray-50 border-b border-gray-100 p-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-custom-dark rounded-full mb-4">
+                    <i class="fas fa-user-graduate text-custom-accent text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900">Inscription Étudiant</h2>
+                <p class="text-gray-500 mt-2">Créez votre compte et rejoignez la plateforme</p>
+            </div>
             
-            <form method="post" class="space-y-6">
+            <form method="post" class="p-8 space-y-5">
                 {% csrf_token %}
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- First Name -->
-                    <div>
-                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Prénom *
-                        </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Prénom *</label>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.first_name.errors }}</div>
+                            <p class="text-red-500 text-xs mt-1">{{ form.first_name.errors.0 }}</p>
                         {% endif %}
                     </div>
 
-                    <!-- Last Name -->
-                    <div>
-                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Nom *
-                        </label>
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Nom *</label>
                         {{ form.last_name }}
                         {% if form.last_name.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.last_name.errors }}</div>
+                            <p class="text-red-500 text-xs mt-1">{{ form.last_name.errors.0 }}</p>
                         {% endif %}
                     </div>
                 </div>
 
-                <!-- Email -->
-                <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Email *
-                    </label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                        <div class="text-red-600 text-sm mt-1">{{ form.email.errors }}</div>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Email *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Nom d'utilisateur *</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <!-- Username -->
-                <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Nom d'utilisateur *
-                    </label>
-                    {{ form.username }}
-                    {% if form.username.errors %}
-                        <div class="text-red-600 text-sm mt-1">{{ form.username.errors }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Matricule -->
-                    <div>
-                        <label for="{{ form.matricule.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Matricule *
-                        </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Matricule *</label>
                         {{ form.matricule }}
                         {% if form.matricule.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.matricule.errors }}</div>
+                            <p class="text-red-500 text-xs mt-1">{{ form.matricule.errors.0 }}</p>
                         {% endif %}
                     </div>
 
-                    <!-- Year -->
-                    <div>
-                        <label for="{{ form.year.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Niveau d'étude *
-                        </label>
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Niveau d'étude *</label>
                         {{ form.year }}
                         {% if form.year.errors %}
-                            <div class="text-red-600 text-sm mt-1">{{ form.year.errors }}</div>
+                            <p class="text-red-500 text-xs mt-1">{{ form.year.errors.0 }}</p>
                         {% endif %}
                     </div>
                 </div>
 
-                <!-- Department -->
-                <div>
-                    <label for="{{ form.department.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Département *
-                    </label>
+                <div class="input-field">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Département *</label>
                     {{ form.department }}
                     {% if form.department.errors %}
-                        <div class="text-red-600 text-sm mt-1">{{ form.department.errors }}</div>
+                        <p class="text-red-500 text-xs mt-1">{{ form.department.errors.0 }}</p>
                     {% endif %}
                 </div>
 
-                <!-- Password -->
-                <div>
-                    <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Mot de passe *
-                    </label>
-                    {{ form.password1 }}
-                    {% if form.password1.errors %}
-                        <div class="text-red-600 text-sm mt-1">{{ form.password1.errors }}</div>
-                    {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Mot de passe *</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div class="input-field">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Confirmation *</label>
+                        {{ form.password2 }}
+                    </div>
                 </div>
 
-                <!-- Confirm Password -->
-                <div>
-                    <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Confirmer le mot de passe *
-                    </label>
-                    {{ form.password2 }}
-                    {% if form.password2.errors %}
-                        <div class="text-red-600 text-sm mt-1">{{ form.password2.errors }}</div>
-                    {% endif %}
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                <button type="submit" class="w-full btn-custom-accent font-bold py-4 rounded-xl shadow-lg mt-4 uppercase tracking-widest text-sm">
                     S'inscrire
                 </button>
 
-                <!-- Non-field Errors -->
                 {% if form.non_field_errors %}
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-4">
                         {% for error in form.non_field_errors %}
-                            <p>{{ error }}</p>
+                            <p class="text-red-700 text-sm">{{ error }}</p>
                         {% endfor %}
                     </div>
                 {% endif %}
             </form>
 
-            <!-- Links -->
-            <div class="mt-6 text-center">
-                <p class="text-gray-600">
-                    Vous avez déjà un compte?
-                    <a href="{% url 'accounts:login' %}" class="text-blue-600 hover:text-blue-800 font-semibold">
+            <div class="p-6 bg-gray-50 text-center border-t border-gray-100">
+                <p class="text-gray-600 text-sm">
+                    Déjà inscrit ? 
+                    <a href="{% url 'accounts:login' %}" class="font-bold text-gray-900 hover:underline">
                         Se connecter
                     </a>
                 </p>
             </div>
+        </div>
 
-            <!-- Info Box -->
-            <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-600 rounded">
-                <p class="text-sm text-gray-700">
-                    <strong>⚠️ Attention :</strong> Votre compte doit être validé par le chef de département avant de pouvoir accéder à l'emploi du temps.
-                </p>
+        <div class="mt-8 p-5 bg-custom-dark border border-gray-800 rounded-xl flex items-start gap-4">
+            <div class="text-custom-accent mt-1">
+                <i class="fas fa-info-circle"></i>
             </div>
+            <p class="text-sm text-gray-400">
+                <span class="text-custom-accent font-bold">Note :</span> Votre compte doit être validé par le chef de département avant de pouvoir accéder à l'emploi du temps.
+            </p>
         </div>
     </div>
 </div>

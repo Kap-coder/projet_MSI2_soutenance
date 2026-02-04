@@ -1,23 +1,38 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard RH - Tutore2{% endblock %}
+
+{% block title %}Tableau de Bord RH - Tutore2{% endblock %}
+{% block header_title %}Ressources Humaines{% endblock %}
+
 {% block content %}
-<div class="space-y-6">
-    <h1 class="text-4xl font-bold text-gray-800">Dashboard Ressources Humaines</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-xl font-bold text-gray-800">Total Utilisateurs</h3>
-            <p class="text-4xl font-bold text-blue-600 mt-2">{{ total_users }}</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Total Users -->
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-500">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-indigo-100 text-indigo-500 mr-4">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500 font-medium">Utilisateurs Total</p>
+                <p class="text-2xl font-bold text-gray-900">{{ total_users }}</p>
+            </div>
         </div>
-        
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-xl font-bold text-gray-800">Étudiants Inscrits</h3>
-            <p class="text-4xl font-bold text-green-600 mt-2">{{ total_users }}</p>
-        </div>
-        
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-xl font-bold text-gray-800">Inscriptions Pendantes</h3>
-            <p class="text-4xl font-bold text-yellow-600 mt-2">{{ pending_students }}</p>
+    </div>
+
+    <!-- Actions Rapides -->
+    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Actions Rapides</h3>
+        <div class="space-y-2">
+            <a href="{% url 'manage_users:add' %}"
+                class="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
+                Ajouter un Employé
+            </a>
+            <a href="{% url 'manage_users:list' %}?role=TEACHER"
+                class="block w-full text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                Gérer les Enseignants
+            </a>
         </div>
     </div>
 </div>
