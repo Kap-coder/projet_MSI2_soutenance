@@ -13,57 +13,6 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
-    
-<style>
-:root{
-  --accent: #B8F568;
-  --accent-2: #9ad453;
-  --accent-rgb: 184,245,104;
-  --bg-dark: #171418;
-  --card-bg: #ffffff;
-  --muted: #a0a0a0;
-}
-
-/* Override common Tailwind indigo usages to use the project accent (accounts palette) */
-.text-indigo-600 { color: var(--accent) !important; }
-.text-indigo-800 { color: var(--accent) !important; }
-/* match classes with colon via attribute selector */
-[class~="hover:text-indigo-800"]:hover { color: var(--accent) !important; }
-.border-indigo-500 { border-color: var(--accent) !important; }
-.bg-indigo-50 { background-color: rgba(var(--accent-rgb), 0.06) !important; }
-.bg-indigo-600 { background-color: var(--accent) !important; }
-
-/* Accent utility classes */
-.accent { color: var(--accent) !important; }
-.bg-accent { background-color: var(--accent) !important; }
-.border-accent { border-color: var(--accent) !important; }
-
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-
-.fade-in { animation: fadeIn 360ms cubic-bezier(.2,.9,.3,1) both; }
-.slide-up { animation: slideUp 520ms cubic-bezier(.2,.9,.3,1) both; }
-.delay-1 { animation-delay: 0.12s; }
-.delay-2 { animation-delay: 0.28s; }
-
-/* Smooth overflow hint (subtle glow at bottom when scrollable) */
-.overflow-glow { position: relative; overflow: auto; }
-.overflow-glow::after { content: ""; position: absolute; left: 0; right: 0; height: 28px; bottom: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.06) 100%); opacity: 0; transition: opacity .18s ease; }
-.overflow-glow:hover::after { opacity: 1; }
-
-/* Custom scrollbar for supported browsers */
-.overflow-glow::-webkit-scrollbar { height: 8px; width: 8px; }
-.overflow-glow::-webkit-scrollbar-thumb { background: rgba(var(--accent-rgb), 0.35); border-radius: 999px; }
-.overflow-glow::-webkit-scrollbar-track { background: transparent; }
-
-/* Respect user preference */
-@media (prefers-reduced-motion: reduce) { .fade-in, .slide-up { animation: none !important; } }
-
-/* Animate main content universally (non-intrusive) */
-main { animation: fadeIn 260ms cubic-bezier(.2,.9,.3,1); }
-</style>
-
     {% block extra_css %}{% endblock %}
 </head>
 

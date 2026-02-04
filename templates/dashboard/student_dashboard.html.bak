@@ -4,13 +4,13 @@
 {% block header_title %}Mon Espace{% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in slide-up overflow-glow">
-    <div class="lg:col-span-2 fade-in delay-1">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2">
         <!-- Status Banner -->
-        <div class="bg-white shadow rounded-lg overflow-hidden mb-6 fade-in delay-2">
+        <div class="bg-white shadow rounded-lg overflow-hidden mb-6">
             <div
-                class="px-6 py-4 flex items-center justify-between {% if enrollment_status == 'APPROVED' %}bg-green-50{% else %}bg-yellow-50{% endif %} fade-in delay-3">
-                <div class="flex items-center fade-in delay-4">
+                class="px-6 py-4 flex items-center justify-between {% if enrollment_status == 'APPROVED' %}bg-green-50{% else %}bg-yellow-50{% endif %}">
+                <div class="flex items-center">
                     <span class="mr-3">
                         {% if enrollment_status == 'APPROVED' %}
                         <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

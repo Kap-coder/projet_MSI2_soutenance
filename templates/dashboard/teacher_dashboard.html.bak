@@ -4,11 +4,11 @@
 {% block header_title %}Tableau de bord Enseignant{% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in slide-up overflow-glow">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Colonne Principale -->
-    <div class="lg:col-span-2 space-y-6 fade-in delay-1">
-        <div class="bg-white shadow rounded-lg overflow-hidden fade-in delay-2">
-            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center fade-in delay-3">
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
                 <h3 class="text-lg font-medium text-gray-900">Prochains Cours</h3>
                 <a href="#" class="text-sm text-indigo-600 hover:text-indigo-800">Voir tout</a>
             </div>
