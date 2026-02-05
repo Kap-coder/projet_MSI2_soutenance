@@ -1,184 +1,464 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inscription Étudiant - GORE</title>
+    <style>
+        /* ============================================
+           RESET & VARIABLES GLOBALES
+           ============================================ */
+        
+        :root {
+            --color-bg-dark: #0f0e12;
+            --color-bg-light: #ffffff;
+            --color-text-dark: #071019;
+            --color-text-light: #ffffff;
+            --color-text-muted: #6b7280;
+            --color-accent: #9be34a;
+            --color-error: #ef4444;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+        }
 
-{% block title %}Inscription Étudiant - GORE{% endblock %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block content %}
-<style>
-    :root {
-        --bg-dark: #171418;
-        --accent: #B8F568;
-        --card-bg: #ffffff;
-        --text-muted: #a0a0a0;
-    }
-    
-    /* Fond principal sombre */
-    .bg-custom-dark { background-color: var(--bg-dark); }
-    
-    /* Couleur d'accentuation pour le texte et les bordures */
-    .text-custom-accent { color: var(--accent); }
-    .border-custom-accent { border-color: var(--accent); }
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-dark);
+        }
 
-    /* Bouton stylisé comme dans le login admin */
-    .btn-custom-accent { 
-        background-color: var(--accent); 
-        color: #000;
-        transition: all 0.3s ease;
-        border: none;
-    }
-    .btn-custom-accent:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(184, 245, 104, 0.2);
-        opacity: 0.95;
-    }
+        body {
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Style des champs de saisie (Inputs & Selects) */
-    .input-field input, .input-field select {
-        width: 100%;
-        padding: 14px 16px;
-        border-radius: 10px;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
-        transition: all 0.2s;
-    }
-    .input-field input:focus, .input-field select:focus {
-        border-color: var(--accent);
-        background: #fff;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(184, 245, 104, 0.15);
-    }
+        /* ============================================
+           LAYOUT SPLIT (Gauche/Droite - Full Screen)
+           ============================================ */
 
-    /* Étiquettes de formulaires */
-    .label-style {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #4a5568;
-        margin-bottom: 0.5rem;
-    }
-</style>
+        .registration-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg-light);
+            overflow: hidden;
+        }
 
-<div class="min-h-screen bg-custom-dark py-12 px-4 flex items-center justify-center">
-    <div class="max-w-2xl w-full">
-        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden project-card animate">
-            <div class="bg-gray-50 border-b border-gray-100 p-10 text-center">
-                <div class="inline-flex items-center justify-center w-20 h-20 bg-custom-dark rounded-full mb-6 shadow-xl">
-                    <i class="fas fa-user-graduate text-custom-accent text-3xl"></i>
+        /* Panneau GAUCHE (sombre) */
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #0b0a0d 0%, #171418 100%);
+            color: var(--color-text-light);
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .left-inner {
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .left-panel h1 {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .left-panel > p {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            margin: var(--spacing-md) 0 0 0;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--color-accent);
+            border-radius: 50px;
+            color: var(--color-accent);
+            background: transparent;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: var(--spacing-lg);
+        }
+
+        .btn-back:hover {
+            background: rgba(155, 227, 74, 0.1);
+            transform: translateX(-4px);
+        }
+
+        .btn-back svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .info-box {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-sm);
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+        }
+
+        .info-box svg {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            color: var(--color-accent);
+        }
+
+        .info-box-content h4 {
+            margin: 0 0 var(--spacing-xs) 0;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-light);
+        }
+
+        .info-box-content p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ============================================
+           PANNEAU DROIT (Formulaire)
+           ============================================ */
+
+        .right-panel {
+            flex: 1;
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+
+        .form {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .form-row.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Inputs/selects */
+        .form-row input,
+        .form-row select,
+        .form-row textarea,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md);
+            font-size: 15px;
+            font-family: inherit;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-sm);
+            background: var(--color-bg-light);
+            color: var(--color-text-dark);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right var(--spacing-md) center;
+            padding-right: 32px;
+        }
+
+        /* Focus */
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus,
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 6px rgba(155, 227, 74, 0.1);
+        }
+
+        /* Erreurs */
+        .form-error {
+            font-size: 12px;
+            color: var(--color-error);
+            font-weight: 600;
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Bouton soumettre */
+        .form-submit {
+            width: 100%;
+            padding: 14px var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            background: linear-gradient(180deg, var(--color-accent), #88c83a);
+            color: var(--color-text-dark);
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .form-submit:hover {
+            box-shadow: 0 8px 16px rgba(155, 227, 74, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Erreurs globales */
+        .form-errors {
+            background: #fef2f2;
+            border-left: 4px solid var(--color-error);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            color: var(--color-error);
+            margin-top: var(--spacing-lg);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .form-footer {
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            font-size: 14px;
+            color: var(--color-text-muted);
+        }
+
+        .form-footer a {
+            color: var(--color-accent);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .form-footer a:hover {
+            color: #7ec626;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 900px) {
+            .registration-container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                padding: var(--spacing-lg);
+                border-bottom: 1px solid #e5e7eb;
+                min-height: 280px;
+            }
+
+            .right-panel {
+                padding: var(--spacing-lg);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .left-panel,
+            .right-panel {
+                padding: var(--spacing-md);
+            }
+
+            .left-panel h1 {
+                font-size: 28px;
+            }
+
+            .form-grid {
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <!-- PANNEAU GAUCHE -->
+        <div class="left-panel">
+            <div class="left-inner">
+                <h1>Espace Étudiant</h1>
+                <p>Connectez-vous et accédez aux différents calendriers de l'école.</p>
+
+                <a href="/" class="btn-back" aria-label="Retour à la page de connexion">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Retour au choix
+                </a>
+
+                <div class="info-box">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 7v5m0 4v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div class="info-box-content">
+                        <h4>Processus de validation</h4>
+                        <p>Votre compte sera soumis à la validation du <strong>chef de département</strong>. Un accès complet sera débloqué après confirmation.</p>
+                    </div>
                 </div>
-                <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Inscription Étudiant</h2>
-                <p class="text-gray-500 mt-2 font-medium">Rejoignez la plateforme GORE</p>
             </div>
-            
-            <form method="post" class="p-10 space-y-6">
+        </div>
+
+        <!-- PANNEAU DROIT -->
+        <div class="right-panel">
+            <form method="post" class="form" novalidate>
                 {% csrf_token %}
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="input-field fade-in delay-1">
-                        <label class="label-style">Prénom *</label>
+
+                <div class="form-grid">
+                    <!-- Prénom -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_first_name">Prénom *</label>
                         {{ form.first_name }}
-                        {% if form.first_name.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.first_name.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.first_name.errors %}<div class="form-error">{{ form.first_name.errors.0 }}</div>{% endif %}
                     </div>
 
-                    <div class="input-field">
-                        <label class="label-style">Nom *</label>
+                    <!-- Nom -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_last_name">Nom *</label>
                         {{ form.last_name }}
-                        {% if form.last_name.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.last_name.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.last_name.errors %}<div class="form-error">{{ form.last_name.errors.0 }}</div>{% endif %}
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="input-field fade-in delay-1">
-                        <label class="label-style">Email Professionnel *</label>
+                    <!-- Email -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_email">Email professionnel *</label>
                         {{ form.email }}
-                        {% if form.email.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.email.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.email.errors %}<div class="form-error">{{ form.email.errors.0 }}</div>{% endif %}
                     </div>
-                    <div class="input-field">
-                        <label class="label-style">Nom d'utilisateur *</label>
+
+                    <!-- Nom d'utilisateur -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_username">Nom d'utilisateur *</label>
                         {{ form.username }}
-                        {% if form.username.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.username.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.username.errors %}<div class="form-error">{{ form.username.errors.0 }}</div>{% endif %}
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="input-field fade-in delay-1">
-                        <label class="label-style">Matricule Étudiant *</label>
+                    <!-- Matricule -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_matricule">Matricule étudiant *</label>
                         {{ form.matricule }}
-                        {% if form.matricule.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.matricule.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.matricule.errors %}<div class="form-error">{{ form.matricule.errors.0 }}</div>{% endif %}
                     </div>
 
-                    <div class="input-field">
-                        <label class="label-style">Niveau d'étude *</label>
+                    <!-- Niveau d'étude -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_year">Niveau d'étude *</label>
                         {{ form.year }}
-                        {% if form.year.errors %}
-                            <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.year.errors.0 }}</p>
-                        {% endif %}
+                        {% if form.year.errors %}<div class="form-error">{{ form.year.errors.0 }}</div>{% endif %}
                     </div>
-                </div>
 
-                <div class="input-field">
-                    <label class="label-style">Département *</label>
-                    {{ form.department }}
-                    {% if form.department.errors %}
-                        <p class="text-red-500 text-xs mt-1 font-semibold">{{ form.department.errors.0 }}</p>
-                    {% endif %}
-                </div>
+                    <!-- Département (full-width) -->
+                    <div class="form-row full-width">
+                        <label class="form-label" for="id_department">Département *</label>
+                        {{ form.department }}
+                        {% if form.department.errors %}<div class="form-error">{{ form.department.errors.0 }}</div>{% endif %}
+                    </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="input-field fade-in delay-1">
-                        <label class="label-style">Mot de passe *</label>
+                    <!-- Mot de passe -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_password1">Mot de passe *</label>
                         {{ form.password1 }}
+                        {% if form.password1.errors %}<div class="form-error">{{ form.password1.errors.0 }}</div>{% endif %}
                     </div>
-                    <div class="input-field">
-                        <label class="label-style">Confirmer *</label>
+
+                    <!-- Confirmation -->
+                    <div class="form-row">
+                        <label class="form-label" for="id_password2">Confirmer *</label>
                         {{ form.password2 }}
+                        {% if form.password2.errors %}<div class="form-error">{{ form.password2.errors.0 }}</div>{% endif %}
                     </div>
                 </div>
 
-                <button type="submit" class="w-full btn-custom-accent font-bold py-4 rounded-xl shadow-lg mt-6 uppercase tracking-widest text-sm">
-                    CRÉER MON COMPTE
-                </button>
+                <!-- Bouton -->
+                <button type="submit" class="form-submit">CRÉER MON COMPTE</button>
 
+                <!-- Erreurs globales -->
                 {% if form.non_field_errors %}
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                        {% for error in form.non_field_errors %}
-                            <p class="text-red-700 text-sm font-medium">{{ error }}</p>
-                        {% endfor %}
+                    <div class="form-errors" role="alert">
+                        {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
                     </div>
                 {% endif %}
+
+                <!-- Footer -->
+                <div class="form-footer">
+                    Déjà inscrit ? <a href="/">Se connecter ici</a>
+                </div>
             </form>
-
-            <div class="p-8 bg-gray-50 text-center border-t border-gray-100">
-                <p class="text-gray-600 font-medium">
-                    Déjà inscrit ? 
-                    <a href="{% url 'accounts:login' %}" class="ml-1 text-gray-900 font-bold hover:text-black border-b-2 border-custom-accent pb-0.5 transition-colors">
-                        Se connecter ici
-                    </a>
-                </p>
-            </div>
-        </div>
-
-        <div class="mt-10 p-6 bg-[#1e1b20] border border-gray-800 rounded-2xl flex items-start gap-5 shadow-xl">
-            <div class="flex-shrink-0 w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
-                <i class="fas fa-shield-alt text-custom-accent"></i>
-            </div>
-            <div>
-                <h4 class="text-white font-bold text-sm mb-1 uppercase tracking-wider">Processus de validation</h4>
-                <p class="text-sm text-gray-400 leading-relaxed">
-                    Votre compte est soumis à la validation du <span class="text-white font-semibold text-custom-accent">chef de département</span>. Un accès complet à l'emploi du temps sera débloqué après confirmation.
-                </p>
-            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
